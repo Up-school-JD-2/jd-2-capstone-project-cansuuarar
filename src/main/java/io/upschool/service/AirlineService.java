@@ -22,7 +22,7 @@ public class AirlineService {
 							.builder()
 							.airlineCode(airlineSaveRequest.getAirlineCode())
 							.airlineName(airlineSaveRequest.getAirlineName())
-							.airplane(airlineSaveRequest.getAirplane())
+							//.airplane(airlineSaveRequest.getAirplane())
 							.build();
 		
 		Airline savedAirline = airlineRepository.save(newAirline);
