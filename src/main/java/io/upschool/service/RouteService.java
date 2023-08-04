@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import io.upschool.dtoo.route.RouteSaveRequest;
 import io.upschool.dtoo.route.RouteSaveResponse;
+import io.upschool.entity.Airline;
 import io.upschool.entity.Airport;
 import io.upschool.entity.Route;
 import io.upschool.repository.RouteRepository;
@@ -27,12 +28,17 @@ public class RouteService {
 		
 		
 
-		Route newRoute = Route.builder().departureAirport(departureByReference)
-				.destinationAirport(destinationByReference).build();
+		Route newRoute = Route
+						.builder()
+						.departureAirport(departureByReference)
+						.destinationAirport(destinationByReference)
+						.build();
 
 		Route savedRoute = routeRepository.save(newRoute);
 
-		RouteSaveResponse response = RouteSaveResponse.builder().routeInfo(savedRoute.getDepartureAirport().getCode() + " -> " + savedRoute.getDestinationAirport().getCode()).build();
+		RouteSaveResponse response = RouteSaveResponse
+									 .builder().routeInfo(savedRoute.getDepartureAirport().getCode() + " -> " + savedRoute.getDestinationAirport().getCode())
+									 .build();
 		
 		return response;
 	}
@@ -45,6 +51,13 @@ public class RouteService {
 	
 	public Route findRouteById(Long id) {
 		return routeRepository.findById(id).orElse(null);
+	}
+	
+	
+	
+	@Transactional
+	public Route getReferenceById(Long id) {
+		return routeRepository.getReferenceById(id);
 	}
 }
  

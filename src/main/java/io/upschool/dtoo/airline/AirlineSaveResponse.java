@@ -1,5 +1,7 @@
 package io.upschool.dtoo.airline;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +13,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AirlineSaveResponse {
 
-	private String codeId;
+	private String airlineCode;
 
+	private String airlineName;
+
+	private List<String> airplane;
 }

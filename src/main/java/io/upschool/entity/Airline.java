@@ -37,8 +37,8 @@ public class Airline {
 	@Column(name = "airplane", nullable = false, length = 150)
 	private List<String> airplane;
 
-	@OneToMany(fetch = FetchType.LAZY) //unidirectional oneToMany
-	@JoinColumn(name="flight_id")
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "flight_id", nullable = false)
 	private List<Flight> flights;
 
 }
