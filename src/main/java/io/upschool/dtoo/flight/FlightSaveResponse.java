@@ -19,6 +19,6 @@ public class FlightSaveResponse {
 
 	private Long routeId;
 
-	//private Long airlineId;
+	private Long airlineId;
 
 }

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import io.upschool.dtoo.airport.AirportSaveRequest;
 import io.upschool.dtoo.airport.AirportSaveResponse;
-import io.upschool.entity.Airline;
 import io.upschool.entity.Airport;
 import io.upschool.repository.AirportRepository;
 import jakarta.transaction.Transactional;

@@ -7,4 +7,6 @@ import io.upschool.entity.Route;
 public interface RouteRepository extends JpaRepository<Route, Long>{
 
 	// TODO: Route sınıfı için airport code unu alacağın joinli bir query yaz.
+	
+	
 }

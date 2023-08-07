@@ -18,22 +18,23 @@ import lombok.RequiredArgsConstructor;
 public class FlightService {
 	
 	private final FlightRepository flightRepository;
-	//private final AirlineService airlineService;
+	private final AirlineService airlineService;
 	private final RouteService routeService;
 	
 	
 	@Transactional
 	public FlightSaveResponse save(FlightSavedRequest request) {
 		
-		//Airline airlineByReference = airlineService.getReferenceById(request.getAirlineId());
+		Airline airlineByReference = airlineService.getReferenceById(request.getAirlineId());
 		Route routeByReference =  routeService.getReferenceById(request.getRouteId());
 		
 		
 		Flight newFlight = Flight.builder()
 								 .departureDate(request.getDepartureDate())
 								 .arrivalDate(request.getArrivalDate())
-								 .routeId(routeByReference).build();
-							//	 .airlineId(airlineByReference)
+								 .routeId(routeByReference)
+								 .airlineId(airlineByReference)
+								 .build();
 		
 		
 		var savedFlight = flightRepository.save(newFlight);
@@ -43,7 +44,7 @@ public class FlightService {
 						   .departureDate(savedFlight.getDepartureDate())
 						   .arrivalDate(savedFlight.getArrivalDate())
 						   .routeId(savedFlight.getRouteId().getId())
-						  // .airlineId(savedFlight.getAirlineId().getId())
+						   .airlineId(savedFlight.getAirlineId().getId())
 						   .build();
 						   
 
@@ -61,5 +62,9 @@ public class FlightService {
 	}
 	
 	
+	@Transactional
+	public Flight getReferenceById(Long id) {
+		return  flightRepository.getReferenceById(id);
+	}
 
 }

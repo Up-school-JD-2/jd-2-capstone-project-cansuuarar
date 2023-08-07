@@ -18,6 +18,8 @@ public class AirlineSaveRequest {
 
 	private String airlineName;
 
-	private List<String> airplane;
+	//private List<String> airplane;
+	
+	//private Long flightId;
 
 }

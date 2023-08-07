@@ -17,75 +17,44 @@ import lombok.RequiredArgsConstructor;
 public class AirlineService {
 
 	private final AirlineRepository airlineRepository;
+	//private final FlightService flightService;
 
-	public AirlineSaveResponse save(AirlineSaveRequest airlineSaveRequest) {
-		
-		Airline newAirline = Airline
-							.builder()
-							.airlineCode(airlineSaveRequest.getAirlineCode())
-							.airlineName(airlineSaveRequest.getAirlineName())
-							.airplane(airlineSaveRequest.getAirplane())
-							.build();
-		
+	@Transactional
+	public AirlineSaveResponse save(AirlineSaveRequest request) {
+
+		//Flight flightByReference = flightService.getReferenceById(request.getFlightId());
+
+		Airline newAirline = Airline.builder().airlineCode(request.getAirlineCode())
+				.airlineName(request.getAirlineName()).build();
+
 		Airline savedAirline = airlineRepository.save(newAirline);
-		
-		return AirlineSaveResponse
-				.builder()
-				.airlineCode(savedAirline.getAirlineCode())
-				.airlineName(savedAirline.getAirlineName())
-				.airplane(savedAirline.getAirplane())
-				.build();
+
+		return AirlineSaveResponse.builder().airlineCode(savedAirline.getAirlineCode())
+				.airlineName(savedAirline.getAirlineName()).build();
 	}
-	
-	
-	public List<Airline> getAllAirlines(){
+
+	public List<Airline> getAllAirlines() {
 		return airlineRepository.findAll();
-		
+
 	}
-	
-	
+
 	public Airline save(Airline airline) {
 		return airlineRepository.save(airline);
 	}
 
-	
 	public Airline findAirlineById(Long id) {
 		return airlineRepository.findById(id).orElse(null);
 	}
-	
-	
-	
-	
+
 	@Transactional
 	public Airline getReferenceById(Long id) {
 		return airlineRepository.getReferenceById(id);
 	}
-	
-	
-	public Airline addFlight(Flight flight) {
-		return null;
-		
-	
-		
-	}
+
+//	public Airline searchFlight(Airline airline) {
+//		
+//		return airlineRepository.findByFlightId(airline.getFlightId());
+//		
+//		
+//	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 

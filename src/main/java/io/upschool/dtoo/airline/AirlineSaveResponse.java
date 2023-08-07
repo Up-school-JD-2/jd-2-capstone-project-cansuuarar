@@ -17,5 +17,7 @@ public class AirlineSaveResponse {
 
 	private String airlineName;
 
-	private List<String> airplane;
+	//private List<String> airplane;
+	
+	//private Long flightId;
 }

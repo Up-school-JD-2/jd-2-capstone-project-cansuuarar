@@ -20,6 +20,6 @@ public class FlightSavedRequest {
 
 	private Long routeId;
 
-	//private Long airlineId;
-
+	private Long airlineId;
+	
 }
