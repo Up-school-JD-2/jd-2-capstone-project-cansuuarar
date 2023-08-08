@@ -1,6 +1,6 @@
 package io.upschool.dtoo.ticket;
 
-import io.upschool.entity.Flight;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +15,11 @@ public class TicketSaveRequest {
 	private String passengerName;
 
 	private String cardNumber;
+	
+	private Long totalSeat;
 
-	private Flight flight;
+	private Long flightId;
+	
+	
 
 }

@@ -28,8 +28,8 @@ public class Ticket {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "ticket_number", nullable = false, unique = true)
-	private Long ticketNumber; // Benzersiz bilet numarası
+	@Column(name = "ticket_no",  unique = true)
+	private String ticketNumber; // Benzersiz bilet numarası
 
 	@Column(name = "card_number", nullable = false, unique = true)
 	private String cardNumber; // Benzersiz card numarası
@@ -40,15 +40,15 @@ public class Ticket {
 	@Column(name = "is_purchased", nullable = false)
 	private boolean isPurchased;
 
-	@Column(name = "price", nullable = false)
+	@Column(name = "price", nullable = true)
 	private Double price;
 	
 	@Column(name="seat_number")
-	private int seatNumber;
+	private Long seatNumber;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "flight_id", nullable = false)
-	private Flight flight;
+	private Flight flightId;
 	
 //	@OneToOne(mappedBy = "ticket")
 //	private Payment payment;

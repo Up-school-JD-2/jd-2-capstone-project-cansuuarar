@@ -56,7 +56,6 @@ public class RouteService {
 	}
 	
 	
-	
 	@Transactional
 	public Route getReferenceById(Long id) {
 		return routeRepository.getReferenceById(id);

@@ -56,7 +56,7 @@ public class Flight {
 	@JoinColumn(name = "airline_id", nullable = false)
 	private Airline airlineId;
 	
-	@OneToMany(mappedBy = "flight")
+	@OneToMany(mappedBy = "flightId")
 	private List<Ticket> tickets;
 	
 	

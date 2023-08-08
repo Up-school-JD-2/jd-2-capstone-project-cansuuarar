@@ -1,6 +1,5 @@
 package io.upschool.dtoo.ticket;
 
-import io.upschool.entity.Flight;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,14 +11,16 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TicketSaveResponse {
 
-	private Long ticketNumber;
-
 	private String passengerName;
-
-	private boolean isPurchased;
-
-	private Double seatNumber;
 	
-	private Flight flight;
+	private String cardNumber;
+	
+	private boolean isPurchased;
+	
+	private String ticketNumber;
+
+	private Long seatNumber;
+	
+	private Long flightId;
 
 }
