@@ -32,6 +32,7 @@ public class FlightService {
 		Flight newFlight = Flight.builder()
 								 .departureDate(request.getDepartureDate())
 								 .arrivalDate(request.getArrivalDate())
+								 .totalSeat(request.getTotalSeat())
 								 .routeId(routeByReference)
 								 .airlineId(airlineByReference)
 								 .build();
@@ -43,6 +44,7 @@ public class FlightService {
 		FlightSaveResponse response = FlightSaveResponse.builder()
 						   .departureDate(savedFlight.getDepartureDate())
 						   .arrivalDate(savedFlight.getArrivalDate())
+						   .totalSeat(savedFlight.getTotalSeat())
 						   .routeId(savedFlight.getRouteId().getId())
 						   .airlineId(savedFlight.getAirlineId().getId())
 						   .build();
@@ -66,5 +68,9 @@ public class FlightService {
 	public Flight getReferenceById(Long id) {
 		return  flightRepository.getReferenceById(id);
 	}
+	
+	
+	
+	
 
 }

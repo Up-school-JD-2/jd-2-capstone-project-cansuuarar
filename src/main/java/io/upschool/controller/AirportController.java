@@ -2,6 +2,7 @@ package io.upschool.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.upschool.dtoo.BaseResponse;
 import io.upschool.dtoo.airport.AirportSaveRequest;
 import io.upschool.dtoo.airport.AirportSaveResponse;
 import io.upschool.entity.Airport;
@@ -36,8 +38,14 @@ public class AirportController {
 	}
 
 	@PostMapping
-	public ResponseEntity<AirportSaveResponse> createAirline(@RequestBody AirportSaveRequest airportSaveRequest) {
-		var response = airportService.save(airportSaveRequest);
+	public ResponseEntity<Object> createAirline(@RequestBody AirportSaveRequest airportSaveRequest) {
+		var airportSaveResponse = airportService.save(airportSaveRequest);
+		var response  = BaseResponse.<AirportSaveResponse>builder()
+					.status(HttpStatus.CREATED.value())
+					.isSuccess(true)
+					.data(airportSaveResponse)
+					.build();
+		
 		return ResponseEntity.ok(response);
 	}
 

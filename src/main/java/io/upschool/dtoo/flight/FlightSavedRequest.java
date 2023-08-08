@@ -17,6 +17,8 @@ public class FlightSavedRequest {
 	private LocalDateTime departureDate;
 
 	private LocalDateTime arrivalDate;
+	
+	private int totalSeat;
 
 	private Long routeId;
 

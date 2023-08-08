@@ -2,6 +2,7 @@ package io.upschool.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import io.upschool.dtoo.BaseResponse;
 import io.upschool.dtoo.airline.AirlineSaveRequest;
 import io.upschool.dtoo.airline.AirlineSaveResponse;
 import io.upschool.entity.Airline;
@@ -36,8 +38,12 @@ public class AirlineController {
 	}
 
 	@PostMapping
-	public ResponseEntity<AirlineSaveResponse> createAirline(@RequestBody AirlineSaveRequest airlineSaveRequest) {
-		var response = airlineService.save(airlineSaveRequest);
+	public ResponseEntity<Object> createAirline(@RequestBody AirlineSaveRequest airlineSaveRequest) {
+		var airlineSaveResponse = airlineService.save(airlineSaveRequest);
+		var response = BaseResponse.<AirlineSaveResponse>builder()
+						.status(HttpStatus.CREATED.value()).isSuccess(true)
+						.data(airlineSaveResponse).build();
+
 		return ResponseEntity.ok(response);
 	}
 

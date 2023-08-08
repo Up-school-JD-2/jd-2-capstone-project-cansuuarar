@@ -2,6 +2,7 @@ package io.upschool.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.upschool.dtoo.BaseResponse;
+import io.upschool.dtoo.flight.FlightSaveResponse;
 import io.upschool.dtoo.route.RouteSaveRequest;
 import io.upschool.dtoo.route.RouteSaveResponse;
 import io.upschool.entity.Route;
@@ -36,8 +39,14 @@ public class RouteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<RouteSaveResponse> createRoute(@RequestBody RouteSaveRequest request) {
-		var response = routeService.save(request);
+	public ResponseEntity<Object> createRoute(@RequestBody RouteSaveRequest request) {
+		var routeSaveResponse = routeService.save(request);
+		var response  = BaseResponse.<RouteSaveResponse>builder()
+				.status(HttpStatus.CREATED.value())
+				.isSuccess(true)
+				.data(routeSaveResponse)
+				.build();
+		
 		return ResponseEntity.ok(response);
 	}
 

@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AirportSaveResponse {
 	
-	private String codeName;
+	private String code;
+
+	private String name;
 	
 
 }

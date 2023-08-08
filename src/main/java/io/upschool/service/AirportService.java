@@ -25,7 +25,8 @@ public class AirportService {
 
 		AirportSaveResponse response = AirportSaveResponse
 										.builder()
-									    .codeName(savedAirport.getCode() + "-" + savedAirport.getName())
+									    .code(savedAirport.getCode())
+									    .name(savedAirport.getName())
 									    .build();
 
 		return response;

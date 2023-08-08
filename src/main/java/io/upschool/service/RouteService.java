@@ -37,7 +37,9 @@ public class RouteService {
 		Route savedRoute = routeRepository.save(newRoute);
 
 		RouteSaveResponse response = RouteSaveResponse
-									 .builder().routeInfo(savedRoute.getDepartureAirport().getCode() + " -> " + savedRoute.getDestinationAirport().getCode())
+									 .builder()
+									 .departureAirportId(savedRoute.getDepartureAirport().getId())		
+									 .destinationAirportId(savedRoute.getDestinationAirport().getId())
 									 .build();
 		
 		return response;
