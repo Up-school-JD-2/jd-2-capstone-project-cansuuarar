@@ -8,6 +8,7 @@ import io.upschool.dtoo.route.RouteSaveRequest;
 import io.upschool.dtoo.route.RouteSaveResponse;
 import io.upschool.entity.Airport;
 import io.upschool.entity.Route;
+import io.upschool.exception.RouteAlreadySavedException;
 import io.upschool.repository.RouteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ public class RouteService {
 	@Transactional
 	public RouteSaveResponse save(RouteSaveRequest request) {
 
+		checkRouteIsAlreadySaved(request);
+
 		Airport departureByReference = airportService.getReferenceByNameLike(request.getDepartureAirportName());
 		Airport destinationByReference = airportService.getReferenceByNameLike(request.getDestinationAirportName());
 
@@ -30,13 +33,22 @@ public class RouteService {
 
 		Route savedRoute = routeRepository.save(newRoute);
 
-		RouteSaveResponse response = RouteSaveResponse.builder()
-				.routeId(savedRoute.getId())
+		RouteSaveResponse response = RouteSaveResponse.builder().routeId(savedRoute.getId())
 				.departureAirportName(savedRoute.getDepartureAirport().getName())
 				.destinationAirportName(savedRoute.getDestinationAirport().getName()).build();
-		
+
 		return response;
 	}
+
+	private void checkRouteIsAlreadySaved(RouteSaveRequest request) {
+		
+		int routeCountByAir = routeRepository.findRouteCountByDepartureAirportAndDestinationAirport(
+				request.getDepartureAirportName(), request.getDestinationAirportName());
+		if (routeCountByAir > 0) {
+			throw new RouteAlreadySavedException("This route already saved with that airports!");
+		}
+	}
+	
 
 	public List<Route> getAllRoutes() {
 		return routeRepository.findAll();

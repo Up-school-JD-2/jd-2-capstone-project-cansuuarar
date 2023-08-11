@@ -13,26 +13,26 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ticket")
 @Data
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Ticket {
+public class Ticket  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "ticket_no")
-	@Builder.Default
-	private String ticketNumber ; // Benzersiz bilet numarası
+	@Column(name = "ticket_no", unique = true)
+	private String ticketNumber ; 
 
 	@Column(name = "card_number", nullable = false, unique = true)
-	private String cardNumber; // Benzersiz card numarası
+	private String cardNumber; 
 
 	@Column(name="passenger_name")
 	private String passengerName;
@@ -41,10 +41,10 @@ public class Ticket {
 	private boolean isPurchased;
 
 	@Column(name = "price", nullable = true)
-	private Double price = DomainConstants.ECONOMY_CLASS_PRICE;
+	private Double price ;
 	
-	@Column(name="seat_number")
-	private Long seatNumber;
+//	@Column(name="seat_number")
+//	private int seatNumber;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "flight_id", nullable = false)

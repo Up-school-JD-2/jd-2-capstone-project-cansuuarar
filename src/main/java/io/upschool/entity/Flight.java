@@ -40,9 +40,8 @@ public class Flight {
 	@Column(name = "arrival_date", nullable = false)
 	private LocalDateTime arrivalDate;
 	
-	
 	@Column(name="total_seat")
-	private int totalSeat = 5 ;
+	private int totalSeat = DomainConstants.TOTAL_SEAT_NUMBER;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "route_id", nullable = false)
@@ -54,8 +53,6 @@ public class Flight {
 	
 	@OneToMany(mappedBy = "flightId")
 	private List<Ticket> tickets;
-	
-	
 	
 
 }

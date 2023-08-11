@@ -1,11 +1,13 @@
 package io.upschool.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import io.upschool.dtoo.airline.AirlineSaveRequest;
 import io.upschool.dtoo.airline.AirlineSaveResponse;
 import io.upschool.entity.Airline;
+import io.upschool.exception.AirlineAlreadySavedException;
 import io.upschool.repository.AirlineRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,9 @@ public class AirlineService {
 	@Transactional
 	public AirlineSaveResponse save(AirlineSaveRequest request) {
 
+		// this airline is saved before? check..
+		checkIsAirlineAlreadySaved(request);
+
 		Airline newAirline = Airline.builder().airlineCode(request.getAirlineCode())
 				.airlineName(request.getAirlineName()).build();
 
@@ -26,6 +31,13 @@ public class AirlineService {
 
 		return AirlineSaveResponse.builder().airlineId(savedAirline.getId()).airlineCode(savedAirline.getAirlineCode())
 				.airlineName(savedAirline.getAirlineName()).build();
+	}
+
+	private void checkIsAirlineAlreadySaved(AirlineSaveRequest request) {
+		int airlineCountByCode = airlineRepository.findAirlineCountByAirlineCode(request.getAirlineCode());
+		if (airlineCountByCode > 0) {
+			throw new AirlineAlreadySavedException("This airline already saved with that code!");
+		}
 	}
 
 	public List<Airline> getAllAirlines() {
@@ -51,10 +63,4 @@ public class AirlineService {
 		return airlineRepository.findByAirlineCode(code);
 	}
 
-//	public Airline searchFlight(Airline airline) {
-//		
-//		return airlineRepository.findByFlightId(airline.getFlightId());
-//		
-//		
-//	}
 }

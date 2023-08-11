@@ -21,12 +21,14 @@ public class FlightService {
 	private final FlightRepository flightRepository;
 	private final AirlineService airlineService;
 	private final RouteService routeService;
-	private final Flight flight;
 	
 	
 	
 	@Transactional
 	public FlightSaveResponse save(FlightSavedRequest request) {
+		
+		
+		
 		
 		Route routeByReference =  routeService.getReferenceById(request.getRouteId());
 		Airline airlineByReference = airlineService.getReferenceByCode(request.getAirlineCode());
@@ -42,10 +44,10 @@ public class FlightService {
 		
 		
 		FlightSaveResponse response = FlightSaveResponse.builder()
-						   .flightId(savedFlight.getId())
+						   .id(savedFlight.getId())
 						   .departureDate(savedFlight.getDepartureDate())
 						   .arrivalDate(savedFlight.getArrivalDate())
-						   .totalSeat(flight.getTotalSeat())
+						   .totalSeat(DomainConstants.TOTAL_SEAT_NUMBER)
 						   .routeId(savedFlight.getRouteId().getId())
 						   .airlineCode(savedFlight.getAirlineCode().getAirlineCode())
 						   .build();			   

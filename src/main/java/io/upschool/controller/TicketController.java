@@ -32,9 +32,14 @@ public class TicketController {
 	}
 	
 	
-	@GetMapping(path = "/{ticketId}")
-	public ResponseEntity<Ticket> findTicket(@PathVariable("ticketId") Long ticketId) {
-		return ResponseEntity.ok(ticketService.findTicketById(ticketId));
+//	@GetMapping(path = "/{ticketId}")
+//	public ResponseEntity<Ticket> findTicket(@PathVariable("ticketId") Long ticketId) {
+//		return ResponseEntity.ok(ticketService.findTicketById(ticketId));
+//	}
+	
+	@GetMapping(path = "/{ticketNumber}")
+	public ResponseEntity<Ticket> findTicketByNumber(@PathVariable("ticketNumber") String ticketNumber) {
+		return ResponseEntity.ok(ticketService.findTicketByTicketNumber(ticketNumber));
 	}
 	
 	@PostMapping
