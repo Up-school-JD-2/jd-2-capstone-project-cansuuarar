@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
+
+import io.upschool.constants.DomainConstants;
 import io.upschool.dtoo.ticket.TicketSaveRequest;
 import io.upschool.dtoo.ticket.TicketSaveResponse;
 import io.upschool.entity.Flight;
@@ -18,17 +20,23 @@ public class TicketService {
 
 	private final TicketRepository ticketRepository;
 	private final FlightService flightService;
+	private final Flight flight;
 	Random random = new Random();
+	
 	
 
 	@Transactional
 	public TicketSaveResponse purchaseTicket(TicketSaveRequest request) {
+		
+		
+		
+		
 		Flight flightReferenceById = flightService.getReferenceById(request.getFlightId());
 
 		Ticket ticket = Ticket.builder()
 				.passengerName(request.getPassengerName())
 				.cardNumber(maskCreditCard(request.getCardNumber()))
-				.seatNumber(request.getTotalSeat() - random.nextLong(request.getTotalSeat()))
+				
 				.flightId(flightReferenceById)				
 				.build();
 
@@ -46,33 +54,18 @@ public class TicketService {
 
 	}
 
-//	private String maskCreditCard(String creditCardNumber) {
-//
-//		int lastVisibleDigit = 4;
-//
-//		StringBuilder maskedCard = new StringBuilder();
-//
-//		for (int i = 0; i < creditCardNumber.length(); i++) {
-//			if (i < creditCardNumber.length() - lastVisibleDigit) {
-//				
-//				maskedCard.append("*");
-//			} else {
-//				maskedCard.append(creditCardNumber.charAt(i));
-//			}
-//		}
-//
-//		String string1 = maskedCard.toString();
-//		
-//		return string1.replaceAll( "[^\\d]", "" );
-//
-//	}
+
 	
 	public String maskCreditCard(String creditCardNumber) {
 		
 		String[] cardNumberArray = creditCardNumber.split("\\D+");
 		//1234, ***
 		//except last four digit masking
+		
+		
 		StringBuilder maskedCardNumber = new StringBuilder();
+		
+		
 		
 		for(int i = 0; i<cardNumberArray.length -1 ; i++) {
 			String piece = cardNumberArray[i];
@@ -80,13 +73,11 @@ public class TicketService {
 				for(int j = 0; j<piece.length();j++) {
 					maskedCardNumber.append('*');
 				}
-				maskedCardNumber.append('-');
 			}
-			
 		}
 		
-		maskedCardNumber.append(creditCardNumber.substring(creditCardNumber.length() - 4));
-		return maskedCardNumber.toString();
+		StringBuilder appendMaskedCardNumber = maskedCardNumber.append(creditCardNumber.substring(creditCardNumber.length() - 4));
+		return appendMaskedCardNumber.toString();
 		
 	}
 	
@@ -98,6 +89,13 @@ public class TicketService {
 	} 
 	
 	
+	private long availableSeatNumber() {
+		
+		return ticketRepository.count();
+		
+	}
+	
+	
 	public List<Ticket> getAllTicket(){
 		return ticketRepository.findAll();
 	}
@@ -106,6 +104,10 @@ public class TicketService {
 	public Ticket findTicketById(Long id) {
 		return ticketRepository.findById(id).orElse(null);
 	}
+	
+	
+
+	
 	
 	
 	

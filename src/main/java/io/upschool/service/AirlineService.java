@@ -3,11 +3,9 @@ package io.upschool.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-
 import io.upschool.dtoo.airline.AirlineSaveRequest;
 import io.upschool.dtoo.airline.AirlineSaveResponse;
 import io.upschool.entity.Airline;
-import io.upschool.entity.Flight;
 import io.upschool.repository.AirlineRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,19 +15,16 @@ import lombok.RequiredArgsConstructor;
 public class AirlineService {
 
 	private final AirlineRepository airlineRepository;
-	//private final FlightService flightService;
 
 	@Transactional
 	public AirlineSaveResponse save(AirlineSaveRequest request) {
-
-		//Flight flightByReference = flightService.getReferenceById(request.getFlightId());
 
 		Airline newAirline = Airline.builder().airlineCode(request.getAirlineCode())
 				.airlineName(request.getAirlineName()).build();
 
 		Airline savedAirline = airlineRepository.save(newAirline);
 
-		return AirlineSaveResponse.builder().airlineCode(savedAirline.getAirlineCode())
+		return AirlineSaveResponse.builder().airlineId(savedAirline.getId()).airlineCode(savedAirline.getAirlineCode())
 				.airlineName(savedAirline.getAirlineName()).build();
 	}
 
@@ -49,6 +44,11 @@ public class AirlineService {
 	@Transactional
 	public Airline getReferenceById(Long id) {
 		return airlineRepository.getReferenceById(id);
+	}
+
+	@Transactional
+	public Airline getReferenceByCode(String code) {
+		return airlineRepository.findByAirlineCode(code);
 	}
 
 //	public Airline searchFlight(Airline airline) {

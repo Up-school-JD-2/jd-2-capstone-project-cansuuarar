@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import io.upschool.constants.DomainConstants;
 import io.upschool.dtoo.flight.FlightSaveResponse;
 import io.upschool.dtoo.flight.FlightSavedRequest;
 import io.upschool.entity.Airline;
@@ -20,38 +21,36 @@ public class FlightService {
 	private final FlightRepository flightRepository;
 	private final AirlineService airlineService;
 	private final RouteService routeService;
+	private final Flight flight;
+	
 	
 	
 	@Transactional
 	public FlightSaveResponse save(FlightSavedRequest request) {
 		
-		Airline airlineByReference = airlineService.getReferenceById(request.getAirlineId());
 		Route routeByReference =  routeService.getReferenceById(request.getRouteId());
-		
+		Airline airlineByReference = airlineService.getReferenceByCode(request.getAirlineCode());
 		
 		Flight newFlight = Flight.builder()
 								 .departureDate(request.getDepartureDate())
 								 .arrivalDate(request.getArrivalDate())
-								 .totalSeat(request.getTotalSeat())
 								 .routeId(routeByReference)
-								 .airlineId(airlineByReference)
+								 .airlineCode(airlineByReference)
 								 .build();
-		
 		
 		var savedFlight = flightRepository.save(newFlight);
 		
 		
 		FlightSaveResponse response = FlightSaveResponse.builder()
+						   .flightId(savedFlight.getId())
 						   .departureDate(savedFlight.getDepartureDate())
 						   .arrivalDate(savedFlight.getArrivalDate())
-						   .totalSeat(savedFlight.getTotalSeat())
+						   .totalSeat(flight.getTotalSeat())
 						   .routeId(savedFlight.getRouteId().getId())
-						   .airlineId(savedFlight.getAirlineId().getId())
-						   .build();
-						   
+						   .airlineCode(savedFlight.getAirlineCode().getAirlineCode())
+						   .build();			   
 
 		return response;
-		
 	}
 	
 	

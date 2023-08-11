@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class TicketSaveResponse {
+	
+	private Long ticketId;
 
 	private String passengerName;
 	

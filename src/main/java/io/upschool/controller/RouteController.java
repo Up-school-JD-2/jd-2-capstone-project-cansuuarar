@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import io.upschool.dtoo.BaseResponse;
-import io.upschool.dtoo.flight.FlightSaveResponse;
 import io.upschool.dtoo.route.RouteSaveRequest;
 import io.upschool.dtoo.route.RouteSaveResponse;
 import io.upschool.entity.Route;

@@ -1,7 +1,5 @@
 package io.upschool.entity;
 
-
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,16 +23,10 @@ public class Airline {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "airline_code", nullable = false, length = 50)
+	@Column(name = "airline_code", unique = true, nullable = false, length = 50)
 	private String airlineCode;
 
-	@Column(name = "airline_name", nullable = false, length = 250)
+	@Column(name = "airline_name", unique = true, nullable = false, length = 250)
 	private String airlineName;
-
-//	@Column(name = "airplane", nullable = false, length = 150)
-//	private List<String> airplane;
-
-
-
 
 }

@@ -1,11 +1,10 @@
 package io.upschool.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import io.upschool.constants.DomainConstants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,29 +31,26 @@ public class Flight {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-	@JsonDeserialize(as = LocalDate.class)
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape=JsonFormat.Shape.STRING)
 	@Column(name = "departure_date", nullable = false)
 	private LocalDateTime departureDate;
 
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-	@JsonDeserialize(as = LocalDate.class)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape=JsonFormat.Shape.STRING)
 	@Column(name = "arrival_date", nullable = false)
 	private LocalDateTime arrivalDate;
 	
-	@Column(name="total_seat", nullable = false)
-	private int totalSeat;
+	
+	@Column(name="total_seat")
+	private int totalSeat = 5 ;
 
-	// manytomany, manyToOne
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "route_id", nullable = false)
 	private Route routeId;
 	
-	//airline
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "airline_id", nullable = false)
-	private Airline airlineId;
+	@JoinColumn(name = "airline_code", nullable = false)
+	private Airline airlineCode;
 	
 	@OneToMany(mappedBy = "flightId")
 	private List<Ticket> tickets;

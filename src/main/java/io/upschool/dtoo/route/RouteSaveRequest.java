@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RouteSaveRequest {
 
-	private Long departureAirportId;
+	private String departureAirportName;
 
-	private Long destinationAirportId;
+	private String destinationAirportName;
 
 }

@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RouteSaveResponse {
 
-	private Long departureAirportId;
-
-	private Long destinationAirportId;
+	private Long routeId;
 	
-	
+	private String departureAirportName;
 
+	private String destinationAirportName;
+	
 }

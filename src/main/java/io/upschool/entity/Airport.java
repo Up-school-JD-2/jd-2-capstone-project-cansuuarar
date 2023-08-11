@@ -26,7 +26,7 @@ public class Airport {
 	@Column(name = "airport_code", unique = true, nullable = false, length = 50)
 	private String code;
 
-	@Column(name = "airport_name", nullable = false, length = 250)
+	@Column(name = "airport_name", unique = true, nullable = false, length = 250)
 	private String name;
 
 }

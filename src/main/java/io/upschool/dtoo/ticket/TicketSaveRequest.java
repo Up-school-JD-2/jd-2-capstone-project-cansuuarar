@@ -16,7 +16,7 @@ public class TicketSaveRequest {
 
 	private String cardNumber;
 	
-	private Long totalSeat;
+	//private Long totalSeat;
 
 	private Long flightId;
 	

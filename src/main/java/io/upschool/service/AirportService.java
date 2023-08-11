@@ -17,6 +17,7 @@ public class AirportService {
 
 	private final AirportRepository airportRepository;
 
+	@Transactional
 	public AirportSaveResponse save(AirportSaveRequest request) {
 
 		Airport newAirport = Airport.builder().code(request.getCode()).name(request.getName()).build();
@@ -25,6 +26,7 @@ public class AirportService {
 
 		AirportSaveResponse response = AirportSaveResponse
 										.builder()
+										.id(savedAirport.getId())
 									    .code(savedAirport.getCode())
 									    .name(savedAirport.getName())
 									    .build();
@@ -39,9 +41,7 @@ public class AirportService {
 	
 	public List<Airport> getAllAirports(){
 		return airportRepository.findAll();
-		
 	}
-	
 	
 	public Airport findAirportById(Long id) {
 		return airportRepository.findById(id).orElse(null);
@@ -52,4 +52,8 @@ public class AirportService {
 		return airportRepository.getReferenceById(id);
 	}
 
+	@Transactional
+	public Airport getReferenceByNameLike(String name) {
+		return airportRepository.findByNameLike(name);
+	}
 }

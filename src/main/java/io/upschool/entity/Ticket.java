@@ -1,5 +1,6 @@
 package io.upschool.entity;
 
+import io.upschool.constants.DomainConstants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -8,18 +9,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ticket")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @Builder
 public class Ticket {
 
@@ -28,8 +27,9 @@ public class Ticket {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "ticket_no",  unique = true)
-	private String ticketNumber; // Benzersiz bilet numarası
+	@Column(name = "ticket_no")
+	@Builder.Default
+	private String ticketNumber ; // Benzersiz bilet numarası
 
 	@Column(name = "card_number", nullable = false, unique = true)
 	private String cardNumber; // Benzersiz card numarası
@@ -41,7 +41,7 @@ public class Ticket {
 	private boolean isPurchased;
 
 	@Column(name = "price", nullable = true)
-	private Double price;
+	private Double price = DomainConstants.ECONOMY_CLASS_PRICE;
 	
 	@Column(name="seat_number")
 	private Long seatNumber;
