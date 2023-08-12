@@ -32,11 +32,14 @@ public class TicketService {
 				.passengerName(request.getPassengerName())
 				.cardNumber(maskCreditCard(request.getCardNumber()))
 				.flightId(flightReferenceById)
+				.ticketNumber(generateTicketNumber())
+				.ticketPrice(flightReferenceById.getPrice() + " TL")
+			    .isPurchased(true)
 				.build();
 		
-		ticket.setTicketNumber(generateTicketNumber());
-		ticket.setPrice(DomainConstants.ECONOMY_CLASS_PRICE);
-
+//		ticket.setTicketNumber(generateTicketNumber());
+//		ticket.setTicketPrice(flightReferenceById.getPrice() + " TL");
+//		ticket.setPurchased(true);
 		Ticket savedTicket = ticketRepository.save(ticket);
 
 		TicketSaveResponse response = TicketSaveResponse.builder()
@@ -45,7 +48,7 @@ public class TicketService {
 				.cardNumber(savedTicket.getCardNumber())
 				.isPurchased(true)
 				.ticketNumber(savedTicket.getTicketNumber())
-				.price(savedTicket.getPrice())
+				.ticketPrice(savedTicket.getTicketPrice())
 				.flightId(savedTicket.getFlightId().getId())
 				.build();
 		
@@ -98,17 +101,8 @@ public class TicketService {
 			
 			seatNumber = number;
 		}
-		
-		
-		
-		
-		
 		return seatNumber;
 		
-		
-
-		
-
 	}
 
 	
@@ -117,7 +111,7 @@ public class TicketService {
 	}
 
 	public Ticket findTicketById(Long id) {
-		return ticketRepository.findById(id).orElse(null);
+		return ticketRepository.findById(id).orElse(null); //orElseThrow(() -> new TicketNotFountException("Ticket could not found!"));
 	}
 	
 	public Ticket findTicketByTicketNumber(String ticketNumber ) {

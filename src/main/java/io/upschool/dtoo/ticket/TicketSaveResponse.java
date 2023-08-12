@@ -23,7 +23,7 @@ public class TicketSaveResponse {
 
 	//private int seatNumber;
 	
-	private Double price;
+	private String ticketPrice;
 	
 	private Long flightId;
 

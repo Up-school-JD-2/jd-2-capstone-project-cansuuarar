@@ -1,4 +1,4 @@
-package io.upschool.exception;
+package io.upschool.exception.flight;
 
 public class FlightAlreadySavedException extends RuntimeException {
 	

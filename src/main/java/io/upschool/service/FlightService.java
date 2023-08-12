@@ -10,6 +10,7 @@ import io.upschool.dtoo.flight.FlightSavedRequest;
 import io.upschool.entity.Airline;
 import io.upschool.entity.Flight;
 import io.upschool.entity.Route;
+import io.upschool.exception.flight.FlightNotFoundException;
 import io.upschool.repository.FlightRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +28,6 @@ public class FlightService {
 	@Transactional
 	public FlightSaveResponse save(FlightSavedRequest request) {
 		
-		
-		
-		
 		Route routeByReference =  routeService.getReferenceById(request.getRouteId());
 		Airline airlineByReference = airlineService.getReferenceByCode(request.getAirlineCode());
 		
@@ -37,8 +35,11 @@ public class FlightService {
 								 .departureDate(request.getDepartureDate())
 								 .arrivalDate(request.getArrivalDate())
 								 .routeId(routeByReference)
-								 .airlineCode(airlineByReference)
+								 .price(request.getPrice())
+								 .airlineId(airlineByReference)
 								 .build();
+		
+		newFlight.setTotalSeat(DomainConstants.TOTAL_SEAT_NUMBER);
 		
 		var savedFlight = flightRepository.save(newFlight);
 		
@@ -47,9 +48,10 @@ public class FlightService {
 						   .id(savedFlight.getId())
 						   .departureDate(savedFlight.getDepartureDate())
 						   .arrivalDate(savedFlight.getArrivalDate())
-						   .totalSeat(DomainConstants.TOTAL_SEAT_NUMBER)
+						   .totalSeat(savedFlight.getTotalSeat())
+						   .price(savedFlight.getPrice())
 						   .routeId(savedFlight.getRouteId().getId())
-						   .airlineCode(savedFlight.getAirlineCode().getAirlineCode())
+						   .airlineCode(savedFlight.getAirlineId().getAirlineCode())
 						   .build();			   
 
 		return response;
@@ -61,7 +63,7 @@ public class FlightService {
 	}
 	
 	public Flight findFlightById(Long id) {
-		return flightRepository.findById(id).orElse(null);
+		return flightRepository.findById(id).orElseThrow(() -> new FlightNotFoundException("Flight could not found!"));
 	}
 	
 	

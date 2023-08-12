@@ -17,7 +17,12 @@ import io.upschool.dtoo.airline.AirlineSaveResponse;
 import io.upschool.dtoo.airport.AirportSaveResponse;
 import io.upschool.dtoo.flight.FlightSaveResponse;
 import io.upschool.dtoo.route.RouteSaveResponse;
-
+import io.upschool.exception.airline.AirlineAlreadySavedException;
+import io.upschool.exception.airport.AirportAlreadySavedException;
+import io.upschool.exception.airline.AirlineNotFoundException;
+import io.upschool.exception.airport.AirportNotFoundException;
+import io.upschool.exception.flight.FlightNotFoundException;
+import io.upschool.exception.flight.FlightAlreadySavedException;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -96,6 +101,41 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.badRequest().body(response);
 	}
 	
+	@ExceptionHandler(AirlineNotFoundException.class)
+	public ResponseEntity<Object> handleAirlineNotFoundException(final Exception exception, final WebRequest request) {
+		System.out.println(
+				"An error has occured in Route. Exception:" + exception.getMessage() + request.getHeader("client-type"));
+		var response = BaseResponse.<AirlineSaveResponse>builder()
+				.status(HttpStatus.BAD_REQUEST.value())
+				.error(exception.getMessage())
+				.isSuccess(false).build();
+		return ResponseEntity.badRequest().body(response);
+	}
+	
+	
+	
+	@ExceptionHandler(AirportNotFoundException.class)
+	public ResponseEntity<Object> AirportNotFoundException(final Exception exception, final WebRequest request) {
+		System.out.println(
+				"An error has occured in Route. Exception:" + exception.getMessage() + request.getHeader("client-type"));
+		var response = BaseResponse.<AirportSaveResponse>builder()
+				.status(HttpStatus.BAD_REQUEST.value())
+				.error(exception.getMessage())
+				.isSuccess(false).build();
+		return ResponseEntity.badRequest().body(response);
+	}
+	
+	
+	@ExceptionHandler(FlightNotFoundException.class)
+	public ResponseEntity<Object> FlightNotFoundException(final Exception exception, final WebRequest request) {
+		System.out.println(
+				"An error has occured in Route. Exception:" + exception.getMessage() + request.getHeader("client-type"));
+		var response = BaseResponse.<AirportSaveResponse>builder()
+				.status(HttpStatus.BAD_REQUEST.value())
+				.error(exception.getMessage())
+				.isSuccess(false).build();
+		return ResponseEntity.badRequest().body(response);
+	}
 	
 
 }

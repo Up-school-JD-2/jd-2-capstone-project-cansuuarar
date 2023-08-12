@@ -25,15 +25,14 @@ public class Route {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "departure_airport_id")
-	private Airport departureAirport;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "departure_airport_id", nullable = false)
+	private Airport departureAirportId;
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "destination_airport_id")
-	private Airport destinationAirport;
-	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "destination_airport_id", nullable = false)
+	private Airport destinationAirportId;
 	
 
 }

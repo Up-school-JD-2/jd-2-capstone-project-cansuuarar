@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.upschool.constants.DomainConstants;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -42,17 +43,20 @@ public class Flight {
 	
 	@Column(name="total_seat")
 	private int totalSeat = DomainConstants.TOTAL_SEAT_NUMBER;
+	
+	@Column(name = "price")
+	private Double price;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "route_id", nullable = false)
 	private Route routeId;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "airline_code", nullable = false)
-	private Airline airlineCode;
+	@ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+	@JoinColumn(name = "airline_id", nullable = false)
+	private Airline airlineId;
 	
-	@OneToMany(mappedBy = "flightId")
-	private List<Ticket> tickets;
+//	@OneToMany(mappedBy = "flightId", fetch = FetchType.LAZY)
+//	private List<Ticket> tickets;
 	
 
 }

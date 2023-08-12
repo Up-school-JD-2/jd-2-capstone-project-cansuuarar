@@ -28,5 +28,5 @@ public class Airline {
 
 	@Column(name = "airline_name", unique = true, nullable = false, length = 250)
 	private String airlineName;
-
+	
 }

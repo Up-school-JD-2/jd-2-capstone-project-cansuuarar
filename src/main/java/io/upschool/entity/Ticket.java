@@ -1,6 +1,5 @@
 package io.upschool.entity;
 
-import io.upschool.constants.DomainConstants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Ticket  {
+public class Ticket {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,31 +28,28 @@ public class Ticket  {
 	private Long id;
 
 	@Column(name = "ticket_no", unique = true)
-	private String ticketNumber ; 
+	private String ticketNumber;
 
 	@Column(name = "card_number", nullable = false, unique = true)
-	private String cardNumber; 
+	private String cardNumber;
 
-	@Column(name="passenger_name")
+	@Column(name = "passenger_name", nullable = false)
 	private String passengerName;
-	
+
 	@Column(name = "is_purchased", nullable = false)
 	private boolean isPurchased;
 
-	@Column(name = "price", nullable = true)
-	private Double price ;
-	
-//	@Column(name="seat_number")
-//	private int seatNumber;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@Column(name = "ticket_price")
+	private String ticketPrice;
+
+	@Column(name = "seat_number")
+	private int seatNumber;
+
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "flight_id", nullable = false)
 	private Flight flightId;
-	
+
 //	@OneToOne(mappedBy = "ticket")
 //	private Payment payment;
 
 }
-
-
-

@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 import io.upschool.dtoo.airline.AirlineSaveRequest;
 import io.upschool.dtoo.airline.AirlineSaveResponse;
 import io.upschool.entity.Airline;
-import io.upschool.exception.AirlineAlreadySavedException;
+import io.upschool.exception.airline.AirlineAlreadySavedException;
+import io.upschool.exception.airline.AirlineNotFoundException;
 import io.upschool.repository.AirlineRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class AirlineService {
 	private void checkIsAirlineAlreadySaved(AirlineSaveRequest request) {
 		int airlineCountByCode = airlineRepository.findAirlineCountByAirlineCode(request.getAirlineCode());
 		if (airlineCountByCode > 0) {
-			throw new AirlineAlreadySavedException("This airline already saved with that code!");
+			throw new AirlineAlreadySavedException("This airline already saved!");
 		}
 	}
 
@@ -45,12 +46,12 @@ public class AirlineService {
 
 	}
 
-	public Airline save(Airline airline) {
-		return airlineRepository.save(airline);
-	}
+//	public Airline save(Airline airline) {
+//		return airlineRepository.save(airline);
+//	}
 
 	public Airline findAirlineById(Long id) {
-		return airlineRepository.findById(id).orElse(null);
+		return airlineRepository.findById(id).orElseThrow(() -> new AirlineNotFoundException("Airline could not found!"));
 	}
 
 	@Transactional

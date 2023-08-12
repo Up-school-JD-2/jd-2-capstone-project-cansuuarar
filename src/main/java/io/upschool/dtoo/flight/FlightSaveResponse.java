@@ -24,6 +24,8 @@ public class FlightSaveResponse {
 	private LocalDateTime arrivalDate;
 
 	private int totalSeat;
+	
+	private Double price;
 
 	private Long routeId;
 

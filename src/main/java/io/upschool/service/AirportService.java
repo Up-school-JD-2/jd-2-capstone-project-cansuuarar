@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 import io.upschool.dtoo.airport.AirportSaveRequest;
 import io.upschool.dtoo.airport.AirportSaveResponse;
 import io.upschool.entity.Airport;
-import io.upschool.exception.AirportAlreadySavedException;
+import io.upschool.exception.airport.AirportAlreadySavedException;
+import io.upschool.exception.airport.AirportNotFoundException;
 import io.upschool.repository.AirportRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class AirportService {
 	private void checkAirportIsAlreadySaved(AirportSaveRequest request) {
 		int airportCountByCode = airportRepository.findAirportCountByAirportCode(request.getCode());
 		if (airportCountByCode > 0) {
-			throw new AirportAlreadySavedException("This airport already saved with that code!");
+			throw new AirportAlreadySavedException("This airport already saved!");
 		}
 	}
 
@@ -50,7 +51,7 @@ public class AirportService {
 	}
 
 	public Airport findAirportById(Long id) {
-		return airportRepository.findById(id).orElse(null);
+		return airportRepository.findById(id).orElseThrow(() -> new AirportNotFoundException("Airport could not found!"));
 	}
 
 	@Transactional
@@ -60,6 +61,12 @@ public class AirportService {
 
 	@Transactional
 	public Airport getReferenceByNameLike(String name) {
-		return airportRepository.findByNameLike(name);
+		
+		Airport airport = airportRepository.findByNameLike(name);
+		
+		if(airport == null) {
+			throw new AirportNotFoundException("Airport couldn not found");
+		}
+		return airport;
 	}
 }

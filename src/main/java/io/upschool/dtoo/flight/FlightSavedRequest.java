@@ -20,6 +20,8 @@ public class FlightSavedRequest {
 	private LocalDateTime arrivalDate;
 
 	private Long routeId;
+	
+	private Double price;
 
 	private String airlineCode;
 

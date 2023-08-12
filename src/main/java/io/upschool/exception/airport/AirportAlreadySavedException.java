@@ -1,4 +1,4 @@
-package io.upschool.exception;
+package io.upschool.exception.airport;
 
 public class AirportAlreadySavedException extends RuntimeException{
 	

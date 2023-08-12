@@ -2,13 +2,17 @@ package io.upschool.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import io.upschool.entity.Route;
 
-public interface RouteRepository extends JpaRepository<Route, Long>{
+public interface RouteRepository extends JpaRepository<Route, Long> {
 
-	@Query(value = "select count(r) from Route r where r.departureAirport=:departureAirport and r.destinationAirport = :destinationAirport")
-	int findRouteCountByDepartureAirportAndDestinationAirport(String departureAirport, String destinationAirport);
+	
+//	int findRouteCountByDepartureAirportAndDestinationAirport(String departureAirportName,
+//			String destinationAirportName);
+
+	Route findRouteByDepartureAirportId_NameAndDestinationAirportId_Name(@Param("departureAirportName") String departureAirportName, @Param("destinationAirportName") String destinationAirportName);
 	
 	
 }

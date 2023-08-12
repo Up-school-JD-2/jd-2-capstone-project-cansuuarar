@@ -26,7 +26,7 @@ public class RouteController {
 
 	@GetMapping
 	public ResponseEntity<List<Route>> getAllRoutes() {
-		var allRoutes = routeService.getAllRoutes();
+		List<Route> allRoutes = routeService.getAllRoutes();
 		return ResponseEntity.ok(allRoutes);
 	}
 

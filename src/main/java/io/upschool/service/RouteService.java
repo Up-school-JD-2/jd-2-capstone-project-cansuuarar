@@ -9,6 +9,7 @@ import io.upschool.dtoo.route.RouteSaveResponse;
 import io.upschool.entity.Airport;
 import io.upschool.entity.Route;
 import io.upschool.exception.RouteAlreadySavedException;
+import io.upschool.exception.route.RouteNotFoundException;
 import io.upschool.repository.RouteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,25 +29,36 @@ public class RouteService {
 		Airport departureByReference = airportService.getReferenceByNameLike(request.getDepartureAirportName());
 		Airport destinationByReference = airportService.getReferenceByNameLike(request.getDestinationAirportName());
 
-		Route newRoute = Route.builder().departureAirport(departureByReference)
-				.destinationAirport(destinationByReference).build();
+		Route newRoute = Route.builder().departureAirportId(departureByReference)
+				.destinationAirportId(destinationByReference).build();
 
 		Route savedRoute = routeRepository.save(newRoute);
 
 		RouteSaveResponse response = RouteSaveResponse.builder().routeId(savedRoute.getId())
-				.departureAirportName(savedRoute.getDepartureAirport().getName())
-				.destinationAirportName(savedRoute.getDestinationAirport().getName()).build();
+				.departureAirportName(savedRoute.getDepartureAirportId().getName())
+				.destinationAirportName(savedRoute.getDestinationAirportId().getName()).build();
 
 		return response;
 	}
 
 	private void checkRouteIsAlreadySaved(RouteSaveRequest request) {
+//		
+//		int routeCountByAir = routeRepository.findRouteCountByDepartureAirportAndDestinationAirport(
+//				request.getDepartureAirportName(), request.getDestinationAirportName());
+//		if (routeCountByAir > 0) {
+//			throw new RouteAlreadySavedException("This route already saved with that airports!");
+//		}
 		
-		int routeCountByAir = routeRepository.findRouteCountByDepartureAirportAndDestinationAirport(
+		
+		Route route = routeRepository.findRouteByDepartureAirportId_NameAndDestinationAirportId_Name(
 				request.getDepartureAirportName(), request.getDestinationAirportName());
-		if (routeCountByAir > 0) {
+		System.out.println(route);
+		if (route != null) {
+			System.out.println(route);
 			throw new RouteAlreadySavedException("This route already saved with that airports!");
 		}
+		
+		
 	}
 	
 
@@ -55,7 +67,7 @@ public class RouteService {
 	}
 
 	public Route findRouteById(Long id) {
-		return routeRepository.findById(id).orElse(null);
+		return routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("Route could not found!"));
 	}
 
 	@Transactional
