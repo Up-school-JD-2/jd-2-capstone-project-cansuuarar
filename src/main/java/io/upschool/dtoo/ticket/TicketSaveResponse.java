@@ -27,6 +27,12 @@ public class TicketSaveResponse {
 	
 	private Long flightId;
 	
+	private String flightNumber;
+	
+	private String departureAirport;
+	
+	private String destinationAirport;
+	
 	private boolean isDeleted ;
 
 }

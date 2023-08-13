@@ -17,6 +17,7 @@ import io.upschool.dtoo.ticket.TicketSaveRequest;
 import io.upschool.dtoo.ticket.TicketSaveResponse;
 import io.upschool.entity.Ticket;
 import io.upschool.service.TicketService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -38,23 +39,19 @@ public class TicketController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> buyTicket(@RequestBody TicketSaveRequest request) {
-
+	public ResponseEntity<Object> buyTicket(@Valid @RequestBody TicketSaveRequest request) {
 		var ticketSaveResponse = ticketService.purchaseTicket(request);
-
 		var response = BaseResponse.<TicketSaveResponse>builder().status(HttpStatus.CREATED.value()).isSuccess(true)
 				.data(ticketSaveResponse).build();
-
 		return ResponseEntity.ok(response);
 
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> softDeleteTicket(@PathVariable Long id) {
+	@DeleteMapping("/{ticketNumber}")
+	public ResponseEntity<Object> softDeleteTicket(@PathVariable String ticketNumber) {
 
-		ticketService.softDeleteTicketById(id);
-
-		return ResponseEntity.ok("ticket id: " + id + " is deleted.");
+		ticketService.softDeleteTicketByTicketNumber(ticketNumber);
+		return ResponseEntity.ok("ticket number: " + ticketNumber + " is cancelled.");
 
 	}
 

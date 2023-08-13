@@ -16,6 +16,7 @@ import io.upschool.dtoo.airport.AirportSaveRequest;
 import io.upschool.dtoo.airport.AirportSaveResponse;
 import io.upschool.entity.Airport;
 import io.upschool.service.AirportService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -38,7 +39,7 @@ public class AirportController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> createAirline(@RequestBody AirportSaveRequest airportSaveRequest) {
+	public ResponseEntity<Object> createAirline(@Valid @RequestBody AirportSaveRequest airportSaveRequest) {
 		var airportSaveResponse = airportService.save(airportSaveRequest);
 		var response  = BaseResponse.<AirportSaveResponse>builder()
 					.status(HttpStatus.CREATED.value())

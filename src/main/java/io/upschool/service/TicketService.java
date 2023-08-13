@@ -34,7 +34,8 @@ public class TicketService {
 
 		Ticket ticket = Ticket.builder().passengerName(request.getPassengerName())
 				.cardNumber(maskCreditCard(request.getCardNumber())).flightId(flightReferenceById)
-				.ticketNumber(generateTicketNumber()).ticketPrice(flightReferenceById.getUnitPrice() + " TL")
+				.ticketNumber(generateTicketNumber())
+				.ticketPrice(flightReferenceById.getUnitPrice() + " TL")
 				.isPurchased(true).build();
 
 		Ticket savedTicket = ticketRepository.save(ticket);
@@ -42,23 +43,41 @@ public class TicketService {
 		TicketSaveResponse response = TicketSaveResponse.builder().ticketId(savedTicket.getId())
 				.passengerName(savedTicket.getPassengerName()).cardNumber(savedTicket.getCardNumber()).isPurchased(true)
 				.ticketNumber(savedTicket.getTicketNumber()).ticketPrice(savedTicket.getTicketPrice())
-				.flightId(savedTicket.getFlightId().getId()).isDeleted(savedTicket.isDeleted()).build();
+				.flightId(savedTicket.getFlightId().getId())
+				.flightNumber(savedTicket.getFlightId().getFlightNumber())
+				.departureAirport(savedTicket.getFlightId().getRouteId().getDepartureAirport().getName())
+				.destinationAirport(savedTicket.getFlightId().getRouteId().getDestinationAirport().getName())
+				.isDeleted(savedTicket.isDeleted()).build();
 
 		return response;
 
 	}
 
-	@Transactional
-	public void softDeleteTicketById(Long id) {
+//	@Transactional
+//	public void softDeleteTicketById(Long id) {
+//
+//		Ticket ticket = ticketRepository.findById(id)
+//				.orElseThrow(() -> new TicketNotFountException("Ticket could not found!"));
+//		if (ticket != null) {
+//			ticket.setDeleted(true);
+//			ticketRepository.save(ticket);
+//		}
+//	}
+	
+	
 
-		Ticket ticket = ticketRepository.findById(id)
+	
+	public void softDeleteTicketByTicketNumber(String ticketNumber) {
+
+		Ticket ticket = ticketRepository.findByTicketNumber(ticketNumber)
 				.orElseThrow(() -> new TicketNotFountException("Ticket could not found!"));
 		if (ticket != null) {
 			ticket.setDeleted(true);
 			ticketRepository.save(ticket);
 		}
 	}
-
+	
+	
 	public String maskCreditCard(String creditCardNumber) {
 
 		String[] cardNumberArray = creditCardNumber.split("\\D+");

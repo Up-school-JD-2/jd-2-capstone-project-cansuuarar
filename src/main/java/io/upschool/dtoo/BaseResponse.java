@@ -20,7 +20,7 @@ public class BaseResponse<T> {
 	private boolean isSuccess;
 	
 	@Builder.Default
-	private String error = "no message available.";
+	private String error = "No error message available.";
 	
 	private T data;
 }

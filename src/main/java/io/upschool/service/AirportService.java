@@ -24,12 +24,13 @@ public class AirportService {
 
 		checkAirportIsAlreadySaved(request);
 
-		Airport newAirport = Airport.builder().code(request.getCode()).name(request.getName()).build();
+		Airport newAirport = Airport.builder().code(request.getCode()).name(request.getName())
+				.location(request.getLocation()).build();
 
 		Airport savedAirport = airportRepository.save(newAirport);
 
 		AirportSaveResponse response = AirportSaveResponse.builder().id(savedAirport.getId())
-				.code(savedAirport.getCode()).name(savedAirport.getName()).build();
+				.code(savedAirport.getCode()).name(savedAirport.getName()).location(savedAirport.getLocation()).build();
 
 		return response;
 

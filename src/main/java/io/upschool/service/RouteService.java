@@ -1,14 +1,13 @@
 package io.upschool.service;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import io.upschool.dtoo.route.RouteSaveRequest;
 import io.upschool.dtoo.route.RouteSaveResponse;
 import io.upschool.entity.Airport;
 import io.upschool.entity.Route;
-import io.upschool.exception.RouteAlreadySavedException;
+import io.upschool.exception.route.RouteAlreadySavedException;
 import io.upschool.exception.route.RouteNotFoundException;
 import io.upschool.repository.RouteRepository;
 import jakarta.transaction.Transactional;
@@ -36,7 +35,10 @@ public class RouteService {
 
 		RouteSaveResponse response = RouteSaveResponse.builder().routeId(savedRoute.getId())
 				.departureAirportName(savedRoute.getDepartureAirport().getName())
-				.destinationAirportName(savedRoute.getDestinationAirport().getName()).build();
+				.departureAirportLocation(savedRoute.getDepartureAirport().getLocation())
+				.destinationAirportName(savedRoute.getDestinationAirport().getName())
+				.destinationAirportLocation(savedRoute.getDestinationAirport().getLocation())
+				.build();
 
 		return response;
 	}

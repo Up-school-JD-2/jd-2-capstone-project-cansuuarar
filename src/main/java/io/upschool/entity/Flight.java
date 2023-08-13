@@ -33,6 +33,10 @@ public class Flight {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name = "flight_number", nullable=false)
+	private String flightNumber;
+	
+	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape=JsonFormat.Shape.STRING)
 	@Column(name = "departure_date", nullable = false)
 	private LocalDateTime departureDate;

@@ -28,5 +28,8 @@ public class Airport {
 
 	@Column(name = "airport_name", unique = true, nullable = false, length = 250)
 	private String name;
+	
+	@Column(name = "airport_location", unique = true, nullable = false, length = 50)
+	private String location;
 
 }

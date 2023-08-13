@@ -1,17 +1,18 @@
 package io.upschool.exception;
 
-import java.net.http.HttpHeaders;
-import java.text.MessageFormat;
 
+import org.springframework.http.HttpHeaders;
+import java.text.MessageFormat;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 import io.upschool.dtoo.BaseResponse;
 import io.upschool.dtoo.airline.AirlineSaveResponse;
 import io.upschool.dtoo.airport.AirportSaveResponse;
@@ -19,13 +20,14 @@ import io.upschool.dtoo.flight.FlightSaveResponse;
 import io.upschool.dtoo.route.RouteSaveResponse;
 import io.upschool.dtoo.ticket.TicketSaveResponse;
 import io.upschool.exception.airline.AirlineAlreadySavedException;
-import io.upschool.exception.airport.AirportAlreadySavedException;
 import io.upschool.exception.airline.AirlineNotFoundException;
+import io.upschool.exception.airport.AirportAlreadySavedException;
 import io.upschool.exception.airport.AirportNotFoundException;
+import io.upschool.exception.flight.FlightAlreadySavedException;
 import io.upschool.exception.flight.FlightNotFoundException;
+import io.upschool.exception.route.RouteAlreadySavedException;
 import io.upschool.exception.route.RouteNotFoundException;
 import io.upschool.exception.ticket.TicketNotFountException;
-import io.upschool.exception.flight.FlightAlreadySavedException;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -37,27 +39,36 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 		System.out.println(errorMessage);
 
-		var response = BaseResponse.<AirlineSaveResponse>builder().status(HttpStatus.BAD_REQUEST.value())
+		var response = BaseResponse.<Object>builder().status(HttpStatus.BAD_REQUEST.value())
 				.isSuccess(false).build();
 
 		return ResponseEntity.ok(response);
 	}
 
+	
 	//general exception structure
-	/*
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleAll(final Exception exception, final WebRequest request) {
 		System.out.println(
 				"An error has occured. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		// return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		var response = BaseResponse.<AirlineSaveResponse>builder()
 				.status(HttpStatus.BAD_REQUEST.value())
 				.error(exception.getMessage())
 				.isSuccess(false).build();
 		return ResponseEntity.badRequest().body(response);
 	}
-	*/
 	
+	
+	@Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        List<String> errorBody=ex.getBindingResult().getFieldErrors().stream().map(fieldError ->
+                fieldError.getDefaultMessage()).toList();
+
+        return new ResponseEntity<>(errorBody, status);
+    }
+
 	@ExceptionHandler(AirlineAlreadySavedException.class)
 	public ResponseEntity<Object> handleAirlineAlreadySavedException(final Exception exception, final WebRequest request) {
 		System.out.println(
@@ -165,7 +176,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 	
 	
-	
+////	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	@Override
+//	public ResponseEntity<Object> handleMethodArgumentNotValid(final Exception exception, final WebRequest request){
+//		System.out.println("An error has occured in Route. Exception:" + exception.getMessage() + request.getHeader("client-type"));
+//		
+//		var response = BaseResponse.<Object>builder().error(exception.getMessage()).build();
+//		
+//		return ResponseEntity.badRequest().body(response);
+//		
+//	}
+//	
 	
 
 }

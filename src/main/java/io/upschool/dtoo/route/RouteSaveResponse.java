@@ -14,7 +14,11 @@ public class RouteSaveResponse {
 	private Long routeId;
 	
 	private String departureAirportName;
+	
+	private String departureAirportLocation;
 
 	private String destinationAirportName;
+	
+	private String destinationAirportLocation;
 	
 }

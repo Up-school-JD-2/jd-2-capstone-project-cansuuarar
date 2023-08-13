@@ -17,6 +17,7 @@ import io.upschool.dtoo.flight.FlightSaveResponse;
 import io.upschool.dtoo.flight.FlightSavedRequest;
 import io.upschool.entity.Flight;
 import io.upschool.service.FlightService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -39,7 +40,7 @@ public class FlightController {
 
 	
 	@PostMapping
-	public ResponseEntity<Object> createFlight(@RequestBody FlightSavedRequest request) {
+	public ResponseEntity<Object> createFlight(@Valid @RequestBody FlightSavedRequest request) {
 		var flightSaveResponse = flightService.save(request);
 		var response  = BaseResponse.<FlightSaveResponse>builder()
 				.status(HttpStatus.CREATED.value())

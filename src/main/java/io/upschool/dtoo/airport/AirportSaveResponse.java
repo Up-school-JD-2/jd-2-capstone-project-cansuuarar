@@ -17,5 +17,7 @@ public class AirportSaveResponse {
 
 	private String name;
 	
+	private String location;
+	
 
 }

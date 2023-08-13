@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 public class FlightSaveResponse {
 	
 	private Long id;
+	
+	private String flightNumber;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
 	private LocalDateTime departureDate;

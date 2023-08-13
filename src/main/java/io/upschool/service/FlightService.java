@@ -1,6 +1,7 @@
 package io.upschool.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ public class FlightService {
 								 .routeId(routeByReference)
 								 .unitPrice(request.getUnitPrice())
 								 .airlineId(airlineByReference)
+								 .flightNumber(generateFlightNumber())
 								 .build();
 		
 		newFlight.setTotalSeat(DomainConstants.TOTAL_SEAT_NUMBER);
@@ -46,6 +48,7 @@ public class FlightService {
 		
 		FlightSaveResponse response = FlightSaveResponse.builder()
 						   .id(savedFlight.getId())
+						   .flightNumber(savedFlight.getFlightNumber())
 						   .departureDate(savedFlight.getDepartureDate())
 						   .arrivalDate(savedFlight.getArrivalDate())
 						   .totalSeat(savedFlight.getTotalSeat())
@@ -66,6 +69,14 @@ public class FlightService {
 		return flightRepository.findById(id).orElseThrow(() -> new FlightNotFoundException("Flight could not found!"));
 	}
 	
+	private String generateFlightNumber() {
+
+		UUID uuid = UUID.randomUUID();
+		String uuidAsString = uuid.toString();
+		String firstThreeDigit = uuidAsString.substring(0, 3);
+		return "FLIGHT-" + firstThreeDigit;
+
+	}
 	
 	@Transactional
 	public Flight getReferenceById(Long id) {
