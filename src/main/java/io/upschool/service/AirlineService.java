@@ -46,9 +46,6 @@ public class AirlineService {
 
 	}
 
-//	public Airline save(Airline airline) {
-//		return airlineRepository.save(airline);
-//	}
 
 	public Airline findAirlineById(Long id) {
 		return airlineRepository.findById(id).orElseThrow(() -> new AirlineNotFoundException("Airline could not found!"));

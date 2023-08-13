@@ -1,5 +1,9 @@
 package io.upschool.entity;
 
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +20,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ticket")
+@SQLDelete(sql = "UPDATE ticket SET is is_deleted = true WHERE id=?") //@SQLDelete annotation to override the delete command
+@Where(clause = "is_deleted=false") //ticket data with the value deleted = true won't be included within the results
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -48,6 +54,9 @@ public class Ticket {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "flight_id", nullable = false)
 	private Flight flightId;
+	
+	@Column(name = "is_deleted")
+	private boolean isDeleted = Boolean.FALSE ;
 
 //	@OneToOne(mappedBy = "ticket")
 //	private Payment payment;

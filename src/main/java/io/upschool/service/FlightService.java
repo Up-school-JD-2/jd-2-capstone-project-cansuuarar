@@ -35,7 +35,7 @@ public class FlightService {
 								 .departureDate(request.getDepartureDate())
 								 .arrivalDate(request.getArrivalDate())
 								 .routeId(routeByReference)
-								 .price(request.getPrice())
+								 .unitPrice(request.getUnitPrice())
 								 .airlineId(airlineByReference)
 								 .build();
 		
@@ -49,7 +49,7 @@ public class FlightService {
 						   .departureDate(savedFlight.getDepartureDate())
 						   .arrivalDate(savedFlight.getArrivalDate())
 						   .totalSeat(savedFlight.getTotalSeat())
-						   .price(savedFlight.getPrice())
+						   .unitPrice(savedFlight.getUnitPrice())
 						   .routeId(savedFlight.getRouteId().getId())
 						   .airlineCode(savedFlight.getAirlineId().getAirlineCode())
 						   .build();			   
@@ -69,11 +69,15 @@ public class FlightService {
 	
 	@Transactional
 	public Flight getReferenceById(Long id) {
+		
 		return  flightRepository.getReferenceById(id);
+		
 	}
 	
-	
-	
+	public void checkFlightExist(Long flightId) {
+		
+		flightRepository.findById(flightId).orElseThrow(() -> new FlightNotFoundException("Flight could not found!"));
+	}
 	
 
 }

@@ -44,8 +44,8 @@ public class Flight {
 	@Column(name="total_seat")
 	private int totalSeat = DomainConstants.TOTAL_SEAT_NUMBER;
 	
-	@Column(name = "price")
-	private Double price;
+	@Column(name = "unit_price")
+	private Double unitPrice;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "route_id", nullable = false)

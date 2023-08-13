@@ -25,7 +25,7 @@ public class FlightSaveResponse {
 
 	private int totalSeat;
 	
-	private Double price;
+	private Double unitPrice;
 
 	private Long routeId;
 

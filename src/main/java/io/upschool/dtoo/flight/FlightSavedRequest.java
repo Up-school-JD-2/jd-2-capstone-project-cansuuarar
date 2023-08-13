@@ -21,7 +21,7 @@ public class FlightSavedRequest {
 
 	private Long routeId;
 	
-	private Double price;
+	private Double unitPrice;
 
 	private String airlineCode;
 

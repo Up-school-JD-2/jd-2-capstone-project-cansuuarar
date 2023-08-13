@@ -26,5 +26,7 @@ public class TicketSaveResponse {
 	private String ticketPrice;
 	
 	private Long flightId;
+	
+	private boolean isDeleted ;
 
 }

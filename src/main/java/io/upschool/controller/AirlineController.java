@@ -34,7 +34,6 @@ public class AirlineController {
 	@GetMapping(path = "/{airlineId}")
 	public ResponseEntity<Airline> findAirline(@PathVariable("airlineId") Long airlineId) {
 		return ResponseEntity.ok(airlineService.findAirlineById(airlineId));
-
 	}
 
 	@PostMapping
