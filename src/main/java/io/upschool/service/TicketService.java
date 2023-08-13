@@ -37,9 +37,6 @@ public class TicketService {
 			    .isPurchased(true)
 				.build();
 		
-//		ticket.setTicketNumber(generateTicketNumber());
-//		ticket.setTicketPrice(flightReferenceById.getPrice() + " TL");
-//		ticket.setPurchased(true);
 		Ticket savedTicket = ticketRepository.save(ticket);
 
 		TicketSaveResponse response = TicketSaveResponse.builder()

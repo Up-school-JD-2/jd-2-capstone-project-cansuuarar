@@ -9,10 +9,9 @@ import io.upschool.entity.Route;
 public interface RouteRepository extends JpaRepository<Route, Long> {
 
 	
-//	int findRouteCountByDepartureAirportAndDestinationAirport(String departureAirportName,
-//			String destinationAirportName);
 
-	Route findRouteByDepartureAirportId_NameAndDestinationAirportId_Name(@Param("departureAirportName") String departureAirportName, @Param("destinationAirportName") String destinationAirportName);
+
+	Route findRouteByDepartureAirport_CodeAndDestinationAirport_Code(@Param("departureAirportCode") String departureAirportCode, @Param("destinationAirportCode") String destinationAirportCode);
 	
 	
 }

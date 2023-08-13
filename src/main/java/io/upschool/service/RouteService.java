@@ -26,39 +26,30 @@ public class RouteService {
 
 		checkRouteIsAlreadySaved(request);
 
-		Airport departureByReference = airportService.getReferenceByNameLike(request.getDepartureAirportName());
-		Airport destinationByReference = airportService.getReferenceByNameLike(request.getDestinationAirportName());
+		Airport departureByReference = airportService.getReferenceByCode(request.getDepartureAirportCode());
+		Airport destinationByReference = airportService.getReferenceByCode(request.getDestinationAirportCode());
 
-		Route newRoute = Route.builder().departureAirportId(departureByReference)
-				.destinationAirportId(destinationByReference).build();
+		Route newRoute = Route.builder().departureAirport(departureByReference)
+				.destinationAirport(destinationByReference).build();
 
 		Route savedRoute = routeRepository.save(newRoute);
 
 		RouteSaveResponse response = RouteSaveResponse.builder().routeId(savedRoute.getId())
-				.departureAirportName(savedRoute.getDepartureAirportId().getName())
-				.destinationAirportName(savedRoute.getDestinationAirportId().getName()).build();
+				.departureAirportName(savedRoute.getDepartureAirport().getName())
+				.destinationAirportName(savedRoute.getDestinationAirport().getName()).build();
 
 		return response;
 	}
 
 	private void checkRouteIsAlreadySaved(RouteSaveRequest request) {
-//		
-//		int routeCountByAir = routeRepository.findRouteCountByDepartureAirportAndDestinationAirport(
-//				request.getDepartureAirportName(), request.getDestinationAirportName());
-//		if (routeCountByAir > 0) {
-//			throw new RouteAlreadySavedException("This route already saved with that airports!");
-//		}
 		
-		
-		Route route = routeRepository.findRouteByDepartureAirportId_NameAndDestinationAirportId_Name(
-				request.getDepartureAirportName(), request.getDestinationAirportName());
+		Route route = routeRepository.findRouteByDepartureAirport_CodeAndDestinationAirport_Code(
+				request.getDepartureAirportCode(), request.getDestinationAirportCode());
 		System.out.println(route);
 		if (route != null) {
 			System.out.println(route);
-			throw new RouteAlreadySavedException("This route already saved with that airports!");
+			throw new RouteAlreadySavedException("This route already saved!");
 		}
-		
-		
 	}
 	
 

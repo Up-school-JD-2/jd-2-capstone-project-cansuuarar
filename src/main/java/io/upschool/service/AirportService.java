@@ -51,7 +51,8 @@ public class AirportService {
 	}
 
 	public Airport findAirportById(Long id) {
-		return airportRepository.findById(id).orElseThrow(() -> new AirportNotFoundException("Airport could not found!"));
+		return airportRepository.findById(id)
+				.orElseThrow(() -> new AirportNotFoundException("Airport could not found!"));
 	}
 
 	@Transactional
@@ -59,14 +60,24 @@ public class AirportService {
 		return airportRepository.getReferenceById(id);
 	}
 
-	@Transactional
-	public Airport getReferenceByNameLike(String name) {
-		
-		Airport airport = airportRepository.findByNameLike(name);
-		
-		if(airport == null) {
+	public Airport getReferenceByCode(String code) {
+
+		Airport airport = airportRepository.findByCode(code);
+		if (airport == null) {
 			throw new AirportNotFoundException("Airport couldn not found");
 		}
+
 		return airport;
 	}
+
+//	@Transactional
+//	public Airport getReferenceByNameLike(String name) {
+//
+//		Airport airport = airportRepository.findByNameLike(name);
+//
+//		if (airport == null) {
+//			throw new AirportNotFoundException("Airport couldn not found");
+//		}
+//		return airport;
+//	}
 }

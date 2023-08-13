@@ -27,12 +27,12 @@ public class Route {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "departure_airport_id", nullable = false)
-	private Airport departureAirportId;
+	private Airport departureAirport;
 	
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "destination_airport_id", nullable = false)
-	private Airport destinationAirportId;
+	private Airport destinationAirport;
 	
 
 }

@@ -14,8 +14,8 @@ public interface AirportRepository extends JpaRepository<Airport, Long> {
 	public Airport findByNameLike(@Param("name") String name);
 	
 	
-//	@Query(value = "select * from Airport a where a.code = :code")
-//	public Airport findByCode(String code);
+	//@Query(value = "select * from Airport a where a.code = :code")
+	public Airport findByCode(String code);
 	
 	
 	@Query(value = "select count(a) from Airport a where a.code = :code")
