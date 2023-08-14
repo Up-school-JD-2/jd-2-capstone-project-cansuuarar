@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class BaseResponse<T> {
 
-	
 	private int status;
-	
+
 	@JsonProperty("isSuccess")
 	private boolean isSuccess;
-	
+
 	@Builder.Default
 	private String error = "No error message available.";
-	
+
 	private T data;
+
 }

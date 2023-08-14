@@ -40,10 +40,8 @@ public class AirlineController {
 	@PostMapping
 	public ResponseEntity<Object> createAirline(@Valid @RequestBody AirlineSaveRequest airlineSaveRequest) {
 		var airlineSaveResponse = airlineService.save(airlineSaveRequest);
-		var response = BaseResponse.<AirlineSaveResponse>builder()
-						.status(HttpStatus.CREATED.value()).isSuccess(true)
-						.data(airlineSaveResponse).build();
-
+		var response = BaseResponse.<AirlineSaveResponse>builder().status(HttpStatus.CREATED.value()).isSuccess(true)
+				.data(airlineSaveResponse).build();
 		return ResponseEntity.ok(response);
 	}
 

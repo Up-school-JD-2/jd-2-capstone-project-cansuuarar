@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ticket")
-@SQLDelete(sql = "UPDATE ticket SET is is_deleted = true WHERE id=?") // @SQLDelete annotation to override the delete command
-@Where(clause = "is_deleted=false") // ticket data with the value deleted = true won't be included within the results
+@SQLDelete(sql = "UPDATE ticket SET is is_deleted = true WHERE id=?") // @SQLDelete annotation to override the delete command.
+@Where(clause = "is_deleted=false") // ticket data with the value deleted = true won't be included within the results.
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,13 +32,13 @@ public class Ticket {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "ticket_no", unique = true)
+	@Column(name = "ticket_no", nullable = false, unique = true)
 	private String ticketNumber;
 
 	@Column(name = "card_number", nullable = false, unique = true)
 	private String cardNumber;
 
-	@Column(name = "passenger_name", nullable = false)
+	@Column(name = "passenger_name", nullable = false, unique = true)
 	private String passengerName;
 
 	@Column(name = "is_purchased", nullable = false)

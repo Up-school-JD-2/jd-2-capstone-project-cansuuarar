@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import io.upschool.dtoo.BaseResponse;
 import io.upschool.dtoo.route.RouteSaveRequest;
 import io.upschool.dtoo.route.RouteSaveResponse;
@@ -40,12 +41,8 @@ public class RouteController {
 	@PostMapping
 	public ResponseEntity<Object> createRoute(@Valid @RequestBody RouteSaveRequest request) {
 		var routeSaveResponse = routeService.save(request);
-		var response  = BaseResponse.<RouteSaveResponse>builder()
-				.status(HttpStatus.CREATED.value())
-				.isSuccess(true)
-				.data(routeSaveResponse)
-				.build();
-		
+		var response = BaseResponse.<RouteSaveResponse>builder().status(HttpStatus.CREATED.value()).isSuccess(true)
+				.data(routeSaveResponse).build();
 		return ResponseEntity.ok(response);
 	}
 

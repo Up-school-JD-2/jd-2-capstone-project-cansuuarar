@@ -2,7 +2,8 @@ package io.upschool.exception;
 
 import org.springframework.http.HttpHeaders;
 import java.text.MessageFormat;
-
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 import io.upschool.dtoo.BaseResponse;
 import io.upschool.dtoo.ticket.TicketSaveResponse;
 import io.upschool.exception.airline.AirlineAlreadySavedException;
@@ -42,24 +44,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.ok(response);
 	}
 
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Object> handleAll(final Exception exception, final WebRequest request) {
-		System.out.println(
-				"An error has occured. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception,
+			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+		Map<String, String> errors = new HashMap<>();
+		exception.getBindingResult().getAllErrors().forEach(error -> {
+			String fieldName = ((FieldError) error).getField();
+			String errorMessage = error.getDefaultMessage();
+			errors.put(fieldName, errorMessage);
+		});
+
+		return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 	}
-
-//	@Override
-//    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-//
-//        List<String> errorBody=ex.getBindingResult().getFieldErrors().stream().map(fieldError ->
-//                fieldError.getDefaultMessage()).toList();
-//
-//        return new ResponseEntity<>(errorBody, status);
-//    }
-//	
-
-	
 
 	@ExceptionHandler(AirlineAlreadySavedException.class)
 	public ResponseEntity<Object> handleAirlineAlreadySavedException(AirlineAlreadySavedException exception) {
@@ -115,6 +111,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		System.out.println("An error has occured in Route. Exception:" + exception.getMessage()
 				+ request.getHeader("client-type"));
 		var response = BaseResponse.<TicketSaveResponse>builder().status(HttpStatus.BAD_REQUEST.value())
+				.error(exception.getMessage()).isSuccess(false).build();
+		return ResponseEntity.badRequest().body(response);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Object> handleAll(final Exception exception, final WebRequest request) {
+		System.out.println(
+				"An error has occured. Exception:" + exception.getMessage() + request.getHeader("client-type"));
+		var response = BaseResponse.<Object>builder().status(HttpStatus.BAD_REQUEST.value())
 				.error(exception.getMessage()).isSuccess(false).build();
 		return ResponseEntity.badRequest().body(response);
 	}

@@ -44,15 +44,12 @@ public class TicketController {
 		var response = BaseResponse.<TicketSaveResponse>builder().status(HttpStatus.CREATED.value()).isSuccess(true)
 				.data(ticketSaveResponse).build();
 		return ResponseEntity.ok(response);
-
 	}
 
 	@DeleteMapping("/{ticketNumber}")
 	public ResponseEntity<Object> softDeleteTicket(@PathVariable String ticketNumber) {
-
 		ticketService.softDeleteTicketByTicketNumber(ticketNumber);
-		return ResponseEntity.ok("ticket number: " + ticketNumber + " has been cancelled.");
-
+		return ResponseEntity.ok("ticket number " + ticketNumber + " has been cancelled.");
 	}
 
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class AirlineSaveResponse {
-	
+
 	private Long airlineId;
 
 	private String airlineCode;

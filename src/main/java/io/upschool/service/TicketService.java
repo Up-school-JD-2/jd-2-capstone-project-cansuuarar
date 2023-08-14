@@ -28,22 +28,21 @@ public class TicketService {
 
 		Flight flightReferenceById = flightService.getReferenceById(request.getFlightId());
 
-		//Checks if flight_id in request is exist in database. If does not exist throws a not found exception.
+		// Checks if flight_id in request is exist in database. If does not exist throws
+		// a not found exception.
 		flightService.findFlightById(request.getFlightId());
 
 		Ticket ticket = Ticket.builder().passengerName(request.getPassengerName())
 				.cardNumber(maskCreditCard(request.getCardNumber())).flightId(flightReferenceById)
-				.ticketNumber(generateTicketNumber())
-				.ticket_price(request.getTicketPrice() + " TL")
-				.isPurchased(true).build();
+				.ticketNumber(generateTicketNumber()).ticket_price(request.getTicketPrice() + " TL").isPurchased(true)
+				.build();
 
 		Ticket savedTicket = ticketRepository.save(ticket);
 
 		TicketSaveResponse response = TicketSaveResponse.builder().ticketId(savedTicket.getId())
 				.passengerName(savedTicket.getPassengerName()).cardNumber(savedTicket.getCardNumber()).isPurchased(true)
 				.ticketNumber(savedTicket.getTicketNumber()).ticketPrice(savedTicket.getTicket_price())
-				.flightId(savedTicket.getFlightId().getId())
-				.flightNumber(savedTicket.getFlightId().getFlightNumber())
+				.flightId(savedTicket.getFlightId().getId()).flightNumber(savedTicket.getFlightId().getFlightNumber())
 				.departureAirport(savedTicket.getFlightId().getRouteId().getDepartureAirport().getName())
 				.destinationAirport(savedTicket.getFlightId().getRouteId().getDestinationAirport().getName())
 				.isDeleted(savedTicket.isDeleted()).build();
@@ -52,7 +51,6 @@ public class TicketService {
 
 	}
 
-	
 	public void softDeleteTicketByTicketNumber(String ticketNumber) {
 
 		Ticket ticket = ticketRepository.findByTicketNumber(ticketNumber)
@@ -62,13 +60,10 @@ public class TicketService {
 			ticketRepository.save(ticket);
 		}
 	}
-	
-	
+
 	public String maskCreditCard(String creditCardNumber) {
 
 		String[] cardNumberArray = creditCardNumber.split("\\D+");
-		// except last four digit masking
-
 		StringBuilder maskedCardNumber = new StringBuilder();
 
 		for (int i = 0; i < cardNumberArray.length - 1; i++) {
@@ -92,7 +87,6 @@ public class TicketService {
 		String uuidAsString = uuid.toString();
 		String firstFiveDigit = uuidAsString.substring(0, 5);
 		return "TICKET-" + firstFiveDigit;
-
 	}
 
 	public List<Ticket> getAllTicket() {
@@ -106,7 +100,6 @@ public class TicketService {
 	public Ticket findTicketByTicketNumber(String ticketNumber) {
 		return ticketRepository.findByTicketNumber(ticketNumber)
 				.orElseThrow(() -> new TicketNotFountException("Ticket could not found!"));
-
 	}
 
 }

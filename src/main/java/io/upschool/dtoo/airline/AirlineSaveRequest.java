@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AirlineSaveRequest {
 
-	@NotBlank(message="Airline code cannot be blank!")
-	@NotNull(message = "Airline code cannot be null!'")
+	@NotBlank(message = "Airline code cannot be blank!")
+	@NotNull(message = "Airline code cannot be null!")
 	private String airlineCode;
-	
-	@NotBlank(message="Airline name cannot be blank!")
-	@NotNull(message = "Airline name cannot be null!'")
+
+	@NotBlank(message = "Airline name cannot be blank!")
+	@NotNull(message = "Airline name cannot be null!")
 	private String airlineName;
 
 }

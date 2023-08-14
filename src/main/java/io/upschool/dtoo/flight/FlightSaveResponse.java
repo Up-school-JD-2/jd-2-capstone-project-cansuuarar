@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class FlightSaveResponse {
-	
+
 	private Long id;
-	
+
 	private String flightNumber;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
@@ -26,7 +26,7 @@ public class FlightSaveResponse {
 	private LocalDateTime arrivalDate;
 
 	private int totalSeat;
-	
+
 	private Long routeId;
 
 	private Long airlineId;

@@ -33,19 +33,15 @@ public class AirportController {
 	}
 
 	@GetMapping(path = "/{airportId}")
-	public ResponseEntity<Airport> findAirport(@PathVariable("airportId") Long airportId){
+	public ResponseEntity<Airport> findAirport(@PathVariable("airportId") Long airportId) {
 		return ResponseEntity.ok(airportService.findAirportById(airportId));
 	}
 
 	@PostMapping
 	public ResponseEntity<Object> createAirline(@Valid @RequestBody AirportSaveRequest airportSaveRequest) {
 		var airportSaveResponse = airportService.save(airportSaveRequest);
-		var response  = BaseResponse.<AirportSaveResponse>builder()
-					.status(HttpStatus.CREATED.value())
-					.isSuccess(true)
-					.data(airportSaveResponse)
-					.build();
-		
+		var response = BaseResponse.<AirportSaveResponse>builder().status(HttpStatus.CREATED.value()).isSuccess(true)
+				.data(airportSaveResponse).build();
 		return ResponseEntity.ok(response);
 	}
 

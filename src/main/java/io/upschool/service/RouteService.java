@@ -27,8 +27,9 @@ public class RouteService {
 
 		Airport departureByReference = airportService.getReferenceByCode(request.getDepartureAirportCode());
 		Airport destinationByReference = airportService.getReferenceByCode(request.getDestinationAirportCode());
-		
-		//Checks if airport_id in request is exist in database. If does not exist throws a not found exception.
+
+		// Checks if airport_id in request is exist in database. If does not exist
+		// throws a not found exception.
 		airportService.findAirportById(departureByReference.getId());
 		airportService.findAirportById(destinationByReference.getId());
 
@@ -41,8 +42,7 @@ public class RouteService {
 				.departureAirportName(savedRoute.getDepartureAirport().getName())
 				.departureAirportLocation(savedRoute.getDepartureAirport().getLocation())
 				.destinationAirportName(savedRoute.getDestinationAirport().getName())
-				.destinationAirportLocation(savedRoute.getDestinationAirport().getLocation())
-				.build();
+				.destinationAirportLocation(savedRoute.getDestinationAirport().getLocation()).build();
 
 		return response;
 	}
@@ -69,5 +69,5 @@ public class RouteService {
 	public Route getReferenceById(Long id) {
 		return routeRepository.getReferenceById(id);
 	}
-	
+
 }

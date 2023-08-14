@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 public class RouteSaveRequest {
 
 	@NotBlank(message = "Departure airport code cannot be blank!")
-	@NotNull(message = "Departure airport code cannot be null!'")
+	@NotNull(message = "Departure airport code cannot be null!")
 	private String departureAirportCode;
 
 	@NotBlank(message = "Destination airport code cannot be blank!")
-	@NotNull(message = "Destination airport code cannot be null!'")
+	@NotNull(message = "Destination airport code cannot be null!")
 	private String destinationAirportCode;
 
 }

@@ -41,11 +41,11 @@ public class AirlineService {
 
 	public List<Airline> getAllAirlines() {
 		return airlineRepository.findAll();
-
 	}
 
 	public Airline findAirlineById(Long id) {
-		return airlineRepository.findById(id).orElseThrow(() -> new AirlineNotFoundException("Airline could not found!"));
+		return airlineRepository.findById(id)
+				.orElseThrow(() -> new AirlineNotFoundException("Airline could not found!"));
 	}
 
 	@Transactional

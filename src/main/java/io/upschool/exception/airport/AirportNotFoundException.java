@@ -1,6 +1,6 @@
 package io.upschool.exception.airport;
 
-public class AirportNotFoundException extends RuntimeException{
+public class AirportNotFoundException extends RuntimeException {
 
 	public AirportNotFoundException(String message) {
 		super(message);

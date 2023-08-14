@@ -33,7 +33,6 @@ public class AirportService {
 				.code(savedAirport.getCode()).name(savedAirport.getName()).location(savedAirport.getLocation()).build();
 
 		return response;
-
 	}
 
 	private void checkAirportIsAlreadySaved(AirportSaveRequest request) {
@@ -42,7 +41,6 @@ public class AirportService {
 			throw new AirportAlreadySavedException("This airport already saved!");
 		}
 	}
-
 
 	public List<Airport> getAllAirports() {
 		return airportRepository.findAll();
@@ -63,14 +61,11 @@ public class AirportService {
 	}
 
 	public Airport getReferenceByCode(String code) {
-
 		Airport airport = airportRepository.findByCode(code);
 		if (airport == null) {
 			throw new AirportNotFoundException("Airport couldn not found");
 		}
-
 		return airport;
 	}
-
 
 }

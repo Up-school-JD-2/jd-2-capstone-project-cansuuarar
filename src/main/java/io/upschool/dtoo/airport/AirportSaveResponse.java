@@ -10,14 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class AirportSaveResponse {
-	
+
 	private Long id;
-	
+
 	private String code;
 
 	private String name;
-	
+
 	private String location;
-	
 
 }

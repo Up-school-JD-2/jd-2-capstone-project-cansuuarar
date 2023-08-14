@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.upschool.dtoo.BaseResponse;
-import io.upschool.dtoo.airport.AirportSaveResponse;
 import io.upschool.dtoo.flight.FlightSaveResponse;
 import io.upschool.dtoo.flight.FlightSavedRequest;
 import io.upschool.entity.Flight;
@@ -38,19 +37,12 @@ public class FlightController {
 		return ResponseEntity.ok(flightService.findFlightById(flightId));
 	}
 
-	
 	@PostMapping
 	public ResponseEntity<Object> createFlight(@Valid @RequestBody FlightSavedRequest request) {
 		var flightSaveResponse = flightService.save(request);
-		var response  = BaseResponse.<FlightSaveResponse>builder()
-				.status(HttpStatus.CREATED.value())
-				.isSuccess(true)
-				.data(flightSaveResponse)
-				.build();
-		
-		
+		var response = BaseResponse.<FlightSaveResponse>builder().status(HttpStatus.CREATED.value()).isSuccess(true)
+				.data(flightSaveResponse).build();
 		return ResponseEntity.ok(response);
 	}
-	
-	
+
 }
