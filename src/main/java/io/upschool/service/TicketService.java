@@ -6,10 +6,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import io.upschool.constants.DomainConstants;
 import io.upschool.dtoo.ticket.TicketSaveRequest;
 import io.upschool.dtoo.ticket.TicketSaveResponse;
-import io.upschool.dtoo.ticket.TicketUpdateRequest;
 import io.upschool.entity.Flight;
 import io.upschool.entity.Ticket;
 import io.upschool.exception.ticket.TicketNotFountException;
@@ -30,7 +28,8 @@ public class TicketService {
 
 		Flight flightReferenceById = flightService.getReferenceById(request.getFlightId());
 
-		flightService.checkFlightExist(request.getFlightId());
+		//Checks if flight_id in request is exist in database. If does not exist throws a not found exception.
+		flightService.findFlightById(request.getFlightId());
 
 		Ticket ticket = Ticket.builder().passengerName(request.getPassengerName())
 				.cardNumber(maskCreditCard(request.getCardNumber())).flightId(flightReferenceById)
@@ -52,19 +51,6 @@ public class TicketService {
 		return response;
 
 	}
-
-//	@Transactional
-//	public void softDeleteTicketById(Long id) {
-//
-//		Ticket ticket = ticketRepository.findById(id)
-//				.orElseThrow(() -> new TicketNotFountException("Ticket could not found!"));
-//		if (ticket != null) {
-//			ticket.setDeleted(true);
-//			ticketRepository.save(ticket);
-//		}
-//	}
-	
-	
 
 	
 	public void softDeleteTicketByTicketNumber(String ticketNumber) {
@@ -106,22 +92,6 @@ public class TicketService {
 		String uuidAsString = uuid.toString();
 		String firstFiveDigit = uuidAsString.substring(0, 5);
 		return "TICKET-" + firstFiveDigit;
-
-	}
-
-	private int generateSeatNumber() {
-
-		int a = DomainConstants.TOTAL_SEAT_NUMBER;
-
-		int number = random.nextInt(5);
-
-		int seatNumber = 1;
-
-		if (number != ticketRepository.count()) {
-
-			seatNumber = number;
-		}
-		return seatNumber;
 
 	}
 

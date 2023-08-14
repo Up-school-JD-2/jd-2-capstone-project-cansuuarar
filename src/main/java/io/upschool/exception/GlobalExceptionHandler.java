@@ -1,12 +1,13 @@
 package io.upschool.exception;
 
-
 import org.springframework.http.HttpHeaders;
 import java.text.MessageFormat;
-import java.util.List;
+
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -14,10 +15,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import io.upschool.dtoo.BaseResponse;
-import io.upschool.dtoo.airline.AirlineSaveResponse;
-import io.upschool.dtoo.airport.AirportSaveResponse;
-import io.upschool.dtoo.flight.FlightSaveResponse;
-import io.upschool.dtoo.route.RouteSaveResponse;
 import io.upschool.dtoo.ticket.TicketSaveResponse;
 import io.upschool.exception.airline.AirlineAlreadySavedException;
 import io.upschool.exception.airline.AirlineNotFoundException;
@@ -28,6 +25,7 @@ import io.upschool.exception.flight.FlightNotFoundException;
 import io.upschool.exception.route.RouteAlreadySavedException;
 import io.upschool.exception.route.RouteNotFoundException;
 import io.upschool.exception.ticket.TicketNotFountException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -39,154 +37,86 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 		System.out.println(errorMessage);
 
-		var response = BaseResponse.<Object>builder().status(HttpStatus.BAD_REQUEST.value())
-				.isSuccess(false).build();
+		var response = BaseResponse.<Object>builder().status(HttpStatus.BAD_REQUEST.value()).isSuccess(false).build();
 
 		return ResponseEntity.ok(response);
 	}
 
-	
-	//general exception structure
-	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleAll(final Exception exception, final WebRequest request) {
 		System.out.println(
 				"An error has occured. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		var response = BaseResponse.<AirlineSaveResponse>builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.error(exception.getMessage())
-				.isSuccess(false).build();
-		return ResponseEntity.badRequest().body(response);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
-	
-	
-	@Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
-        List<String> errorBody=ex.getBindingResult().getFieldErrors().stream().map(fieldError ->
-                fieldError.getDefaultMessage()).toList();
+//	@Override
+//    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+//
+//        List<String> errorBody=ex.getBindingResult().getFieldErrors().stream().map(fieldError ->
+//                fieldError.getDefaultMessage()).toList();
+//
+//        return new ResponseEntity<>(errorBody, status);
+//    }
+//	
 
-        return new ResponseEntity<>(errorBody, status);
-    }
+	
 
 	@ExceptionHandler(AirlineAlreadySavedException.class)
-	public ResponseEntity<Object> handleAirlineAlreadySavedException(final Exception exception, final WebRequest request) {
-		System.out.println(
-				"An error has occured in airline. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		var response = BaseResponse.<AirlineSaveResponse>builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.error(exception.getMessage())
-				.isSuccess(false).build();
-		return ResponseEntity.badRequest().body(response);
+	public ResponseEntity<Object> handleAirlineAlreadySavedException(AirlineAlreadySavedException exception) {
+		System.out.println("An error has occured in airline save operation. Exception:" + exception.getMessage());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
-	
-	
+
 	@ExceptionHandler(AirportAlreadySavedException.class)
-	public ResponseEntity<Object> handleAirportAlreadySavedException(final Exception exception, final WebRequest request) {
-		System.out.println(
-				"An error has occured in airport. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		var response = BaseResponse.<AirportSaveResponse>builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.error(exception.getMessage())
-				.isSuccess(false).build();
-		return ResponseEntity.badRequest().body(response);
+	public ResponseEntity<Object> handleAirportAlreadySavedException(AirportAlreadySavedException exception) {
+		System.out.println("An error has occured in airport save operation. Exception:" + exception.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
-	
+
 	@ExceptionHandler(FlightAlreadySavedException.class)
-	public ResponseEntity<Object> handleFlightAlreadySavedException(final Exception exception, final WebRequest request) {
-		System.out.println(
-				"An error has occured in flight. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		var response = BaseResponse.<FlightSaveResponse>builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.error(exception.getMessage())
-				.isSuccess(false).build();
-		return ResponseEntity.badRequest().body(response);
+	public ResponseEntity<Object> handleFlightAlreadySavedException(FlightAlreadySavedException exception) {
+		System.out.println("An error has occured in flight save operation. Exception:" + exception.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
-	
-	
+
 	@ExceptionHandler(RouteAlreadySavedException.class)
-	public ResponseEntity<Object> handleRouteAlreadySavedException(final Exception exception, final WebRequest request) {
-		System.out.println(
-				"An error has occured in Route. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		var response = BaseResponse.<RouteSaveResponse>builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.error(exception.getMessage())
-				.isSuccess(false).build();
-		return ResponseEntity.badRequest().body(response);
+	public ResponseEntity<Object> handleRouteAlreadySavedException(RouteAlreadySavedException exception) {
+		System.out.println("An error has occured in route save operation. Exception:" + exception.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
-	
+
 	@ExceptionHandler(AirlineNotFoundException.class)
-	public ResponseEntity<Object> handleAirlineNotFoundException(final Exception exception, final WebRequest request) {
-		System.out.println(
-				"An error has occured in Route. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		var response = BaseResponse.<AirlineSaveResponse>builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.error(exception.getMessage())
-				.isSuccess(false).build();
-		return ResponseEntity.badRequest().body(response);
+	public ResponseEntity<Object> handleAirlineNotFoundException(AirlineNotFoundException exception) {
+		System.out.println("Airline could not found in database. Exception:" + exception.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
-	
-	
-	
+
 	@ExceptionHandler(AirportNotFoundException.class)
-	public ResponseEntity<Object> handleAirportNotFoundException(final Exception exception, final WebRequest request) {
-		System.out.println(
-				"An error has occured in Route. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		var response = BaseResponse.<AirportSaveResponse>builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.error(exception.getMessage())
-				.isSuccess(false).build();
-		return ResponseEntity.badRequest().body(response);
+	public ResponseEntity<Object> handleAirportNotFoundException(AirportNotFoundException exception) {
+		System.out.println("Airport could not found in database. Exception:" + exception.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
-	
-	
+
 	@ExceptionHandler(FlightNotFoundException.class)
-	public ResponseEntity<Object> handleFlightNotFoundException(final Exception exception, final WebRequest request) {
-		System.out.println(
-				"An error has occured in Route. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		var response = BaseResponse.<AirportSaveResponse>builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.error(exception.getMessage())
-				.isSuccess(false).build();
-		return ResponseEntity.badRequest().body(response);
+	public ResponseEntity<Object> handleFlightNotFoundException(FlightNotFoundException exception) {
+		System.out.println("Flight could not found in database. Exception:" + exception.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
-	
-	
+
 	@ExceptionHandler(RouteNotFoundException.class)
-	public ResponseEntity<Object> handleRouteNotFoundException(final Exception exception, final WebRequest request) {
-		System.out.println(
-				"An error has occured in Route. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		var response = BaseResponse.<RouteSaveResponse>builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.error(exception.getMessage())
-				.isSuccess(false).build();
-		return ResponseEntity.badRequest().body(response);
+	public ResponseEntity<Object> handleRouteNotFoundException(final Exception exception) {
+		System.out.println("Route could not found in database. Exception:" + exception.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
-	
-	
+
 	@ExceptionHandler(TicketNotFountException.class)
 	public ResponseEntity<Object> handleTicketNotFountException(final Exception exception, final WebRequest request) {
-		System.out.println(
-				"An error has occured in Route. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-		var response = BaseResponse.<TicketSaveResponse>builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.error(exception.getMessage())
-				.isSuccess(false).build();
+		System.out.println("An error has occured in Route. Exception:" + exception.getMessage()
+				+ request.getHeader("client-type"));
+		var response = BaseResponse.<TicketSaveResponse>builder().status(HttpStatus.BAD_REQUEST.value())
+				.error(exception.getMessage()).isSuccess(false).build();
 		return ResponseEntity.badRequest().body(response);
 	}
-	
-	
-////	@ExceptionHandler(MethodArgumentNotValidException.class)
-//	@Override
-//	public ResponseEntity<Object> handleMethodArgumentNotValid(final Exception exception, final WebRequest request){
-//		System.out.println("An error has occured in Route. Exception:" + exception.getMessage() + request.getHeader("client-type"));
-//		
-//		var response = BaseResponse.<Object>builder().error(exception.getMessage()).build();
-//		
-//		return ResponseEntity.badRequest().body(response);
-//		
-//	}
-//	
-	
 
 }

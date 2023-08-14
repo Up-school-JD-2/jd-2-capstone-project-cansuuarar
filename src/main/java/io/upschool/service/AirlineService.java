@@ -1,7 +1,6 @@
 package io.upschool.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import io.upschool.dtoo.airline.AirlineSaveRequest;
@@ -22,7 +21,6 @@ public class AirlineService {
 	@Transactional
 	public AirlineSaveResponse save(AirlineSaveRequest request) {
 
-		// this airline is saved before? check..
 		checkIsAirlineAlreadySaved(request);
 
 		Airline newAirline = Airline.builder().airlineCode(request.getAirlineCode())
@@ -45,7 +43,6 @@ public class AirlineService {
 		return airlineRepository.findAll();
 
 	}
-
 
 	public Airline findAirlineById(Long id) {
 		return airlineRepository.findById(id).orElseThrow(() -> new AirlineNotFoundException("Airline could not found!"));

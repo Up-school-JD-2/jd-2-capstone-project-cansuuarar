@@ -22,7 +22,6 @@ public class TicketSaveRequest {
 	@NotNull(message = "Credit card number cannot be null!'")
 	private String cardNumber;
 	
-	@NotBlank(message = "Flight id cannot be blank!")
 	@NotNull(message = "Flight id cannot be null!'")
 	private Long flightId;
 	

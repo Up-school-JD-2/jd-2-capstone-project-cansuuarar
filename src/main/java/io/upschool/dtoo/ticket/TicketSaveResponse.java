@@ -21,8 +21,6 @@ public class TicketSaveResponse {
 	
 	private String ticketNumber;
 
-	//private int seatNumber;
-	
 	private String ticketPrice;
 	
 	private Long flightId;

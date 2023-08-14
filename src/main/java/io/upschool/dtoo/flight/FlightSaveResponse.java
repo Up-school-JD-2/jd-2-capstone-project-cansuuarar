@@ -31,6 +31,6 @@ public class FlightSaveResponse {
 
 	private Long routeId;
 
-	private String airlineCode;
+	private Long airlineId;
 
 }

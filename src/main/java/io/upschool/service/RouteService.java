@@ -27,6 +27,10 @@ public class RouteService {
 
 		Airport departureByReference = airportService.getReferenceByCode(request.getDepartureAirportCode());
 		Airport destinationByReference = airportService.getReferenceByCode(request.getDestinationAirportCode());
+		
+		//Checks if airport_id in request is exist in database. If does not exist throws a not found exception.
+		airportService.findAirportById(departureByReference.getId());
+		airportService.findAirportById(destinationByReference.getId());
 
 		Route newRoute = Route.builder().departureAirport(departureByReference)
 				.destinationAirport(destinationByReference).build();
@@ -44,7 +48,6 @@ public class RouteService {
 	}
 
 	private void checkRouteIsAlreadySaved(RouteSaveRequest request) {
-		
 		Route route = routeRepository.findRouteByDepartureAirport_CodeAndDestinationAirport_Code(
 				request.getDepartureAirportCode(), request.getDestinationAirportCode());
 		System.out.println(route);
@@ -53,7 +56,6 @@ public class RouteService {
 			throw new RouteAlreadySavedException("This route already saved!");
 		}
 	}
-	
 
 	public List<Route> getAllRoutes() {
 		return routeRepository.findAll();
@@ -67,4 +69,5 @@ public class RouteService {
 	public Route getReferenceById(Long id) {
 		return routeRepository.getReferenceById(id);
 	}
+	
 }

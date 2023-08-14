@@ -43,9 +43,6 @@ public class AirportService {
 		}
 	}
 
-	public Airport save(Airport airport) {
-		return airportRepository.save(airport);
-	}
 
 	public List<Airport> getAllAirports() {
 		return airportRepository.findAll();
@@ -58,7 +55,11 @@ public class AirportService {
 
 	@Transactional
 	public Airport getReferenceById(Long id) {
-		return airportRepository.getReferenceById(id);
+		Airport referenceById = airportRepository.getReferenceById(id);
+		if (referenceById == null) {
+			throw new AirportNotFoundException("Airport couldn not found");
+		}
+		return referenceById;
 	}
 
 	public Airport getReferenceByCode(String code) {
@@ -71,14 +72,5 @@ public class AirportService {
 		return airport;
 	}
 
-//	@Transactional
-//	public Airport getReferenceByNameLike(String name) {
-//
-//		Airport airport = airportRepository.findByNameLike(name);
-//
-//		if (airport == null) {
-//			throw new AirportNotFoundException("Airport couldn not found");
-//		}
-//		return airport;
-//	}
+
 }

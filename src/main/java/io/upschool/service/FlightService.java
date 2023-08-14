@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import io.upschool.constants.DomainConstants;
 import io.upschool.dtoo.flight.FlightSaveResponse;
 import io.upschool.dtoo.flight.FlightSavedRequest;
 import io.upschool.entity.Airline;
@@ -30,21 +29,23 @@ public class FlightService {
 	public FlightSaveResponse save(FlightSavedRequest request) {
 		
 		Route routeByReference =  routeService.getReferenceById(request.getRouteId());
-		Airline airlineByReference = airlineService.getReferenceByCode(request.getAirlineCode());
+		Airline airlineByReference = airlineService.getReferenceById(request.getAirlineId());
+		
+		//Checks if route_id and airline_id in request is exist in database. If does not exist throws a not found exception.
+		routeService.findRouteById(request.getRouteId());
+		airlineService.findAirlineById(request.getAirlineId());
 		
 		Flight newFlight = Flight.builder()
 								 .departureDate(request.getDepartureDate())
 								 .arrivalDate(request.getArrivalDate())
+								 .totalSeat(request.getTotalSeat())
 								 .routeId(routeByReference)
 								 .unitPrice(request.getUnitPrice())
 								 .airlineId(airlineByReference)
 								 .flightNumber(generateFlightNumber())
 								 .build();
 		
-		newFlight.setTotalSeat(DomainConstants.TOTAL_SEAT_NUMBER);
-		
 		var savedFlight = flightRepository.save(newFlight);
-		
 		
 		FlightSaveResponse response = FlightSaveResponse.builder()
 						   .id(savedFlight.getId())
@@ -54,9 +55,8 @@ public class FlightService {
 						   .totalSeat(savedFlight.getTotalSeat())
 						   .unitPrice(savedFlight.getUnitPrice())
 						   .routeId(savedFlight.getRouteId().getId())
-						   .airlineCode(savedFlight.getAirlineId().getAirlineCode())
+						   .airlineId(savedFlight.getAirlineId().getId())
 						   .build();			   
-
 		return response;
 	}
 	
@@ -70,24 +70,15 @@ public class FlightService {
 	}
 	
 	private String generateFlightNumber() {
-
 		UUID uuid = UUID.randomUUID();
 		String uuidAsString = uuid.toString();
 		String firstThreeDigit = uuidAsString.substring(0, 3);
 		return "FLIGHT-" + firstThreeDigit;
-
 	}
 	
 	@Transactional
 	public Flight getReferenceById(Long id) {
-		
 		return  flightRepository.getReferenceById(id);
-		
-	}
-	
-	public void checkFlightExist(Long flightId) {
-		
-		flightRepository.findById(flightId).orElseThrow(() -> new FlightNotFoundException("Flight could not found!"));
 	}
 	
 
