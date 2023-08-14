@@ -34,14 +34,14 @@ public class TicketService {
 		Ticket ticket = Ticket.builder().passengerName(request.getPassengerName())
 				.cardNumber(maskCreditCard(request.getCardNumber())).flightId(flightReferenceById)
 				.ticketNumber(generateTicketNumber())
-				.ticketPrice(flightReferenceById.getUnitPrice() + " TL")
+				.ticket_price(request.getTicketPrice() + " TL")
 				.isPurchased(true).build();
 
 		Ticket savedTicket = ticketRepository.save(ticket);
 
 		TicketSaveResponse response = TicketSaveResponse.builder().ticketId(savedTicket.getId())
 				.passengerName(savedTicket.getPassengerName()).cardNumber(savedTicket.getCardNumber()).isPurchased(true)
-				.ticketNumber(savedTicket.getTicketNumber()).ticketPrice(savedTicket.getTicketPrice())
+				.ticketNumber(savedTicket.getTicketNumber()).ticketPrice(savedTicket.getTicket_price())
 				.flightId(savedTicket.getFlightId().getId())
 				.flightNumber(savedTicket.getFlightId().getFlightNumber())
 				.departureAirport(savedTicket.getFlightId().getRouteId().getDepartureAirport().getName())

@@ -40,7 +40,6 @@ public class FlightService {
 								 .arrivalDate(request.getArrivalDate())
 								 .totalSeat(request.getTotalSeat())
 								 .routeId(routeByReference)
-								 .unitPrice(request.getUnitPrice())
 								 .airlineId(airlineByReference)
 								 .flightNumber(generateFlightNumber())
 								 .build();
@@ -53,7 +52,6 @@ public class FlightService {
 						   .departureDate(savedFlight.getDepartureDate())
 						   .arrivalDate(savedFlight.getArrivalDate())
 						   .totalSeat(savedFlight.getTotalSeat())
-						   .unitPrice(savedFlight.getUnitPrice())
 						   .routeId(savedFlight.getRouteId().getId())
 						   .airlineId(savedFlight.getAirlineId().getId())
 						   .build();			   

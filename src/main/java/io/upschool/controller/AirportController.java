@@ -35,7 +35,6 @@ public class AirportController {
 	@GetMapping(path = "/{airportId}")
 	public ResponseEntity<Airport> findAirport(@PathVariable("airportId") Long airportId){
 		return ResponseEntity.ok(airportService.findAirportById(airportId));
-
 	}
 
 	@PostMapping

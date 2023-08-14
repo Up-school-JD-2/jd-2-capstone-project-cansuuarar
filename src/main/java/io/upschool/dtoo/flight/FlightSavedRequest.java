@@ -25,19 +25,16 @@ public class FlightSavedRequest {
 	private LocalDateTime departureDate;
 
 	@Future(message = "Arrival date must be a future date")
-	@NotNull(message = "Arrival date cannot be null!'")
+	@NotNull(message = "Arrival date cannot be null!")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", shape = JsonFormat.Shape.STRING)
 	private LocalDateTime arrivalDate;
 
 	private int totalSeat;
 
-	@NotNull(message = "Route id cannot be null!'")
+	@NotNull(message = "Route id cannot be null!")
 	private Long routeId;
 
-	@NotNull(message = "Ticket unit price cannot be null!'")
-	private Double unitPrice;
-
-	@NotNull(message = "Airline id cannot be null!'")
+	@NotNull(message = "Airline id cannot be null!")
 	private Long airlineId;
 
 }

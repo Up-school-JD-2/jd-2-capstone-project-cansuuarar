@@ -45,10 +45,7 @@ public class Ticket {
 	private boolean isPurchased;
 
 	@Column(name = "ticket_price")
-	private String ticketPrice;
-
-//	@Column(name = "seat_number")
-//	private int seatNumber;
+	private String ticket_price;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "flight_id", nullable = false)

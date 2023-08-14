@@ -45,9 +45,6 @@ public class Flight {
 	@Column(name="total_seat")
 	private int totalSeat;
 	
-	@Column(name = "unit_price")
-	private Double unitPrice;
-
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "route_id", nullable = false)
 	private Route routeId;
@@ -56,8 +53,4 @@ public class Flight {
 	@JoinColumn(name = "airline_id", nullable = false)
 	private Airline airlineId;
 	
-//	@OneToMany(mappedBy = "flightId", fetch = FetchType.LAZY)
-//	private List<Ticket> tickets;
-	
-
 }

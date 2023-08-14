@@ -51,7 +51,7 @@ public class TicketController {
 	public ResponseEntity<Object> softDeleteTicket(@PathVariable String ticketNumber) {
 
 		ticketService.softDeleteTicketByTicketNumber(ticketNumber);
-		return ResponseEntity.ok("ticket number: " + ticketNumber + " is cancelled.");
+		return ResponseEntity.ok("ticket number: " + ticketNumber + " has been cancelled.");
 
 	}
 
