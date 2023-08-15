@@ -28,28 +28,38 @@ public class TicketController {
 	private final TicketService ticketService;
 
 	@GetMapping
-	public ResponseEntity<List<Ticket>> getAllTickets() {
-		var allTickets = ticketService.getAllTicket();
-		return ResponseEntity.ok(allTickets);
+	public ResponseEntity<BaseResponse<Ticket>> getAllTickets() {
+		List<Ticket> allTicket = ticketService.getAllTicket();
+		BaseResponse<Ticket> response = BaseResponse.<Ticket>builder().status(HttpStatus.FOUND.value()).isSuccess(true)
+				.listData(allTicket).build();
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping(path = "/{ticketNumber}")
-	public ResponseEntity<Ticket> findTicketByNumber(@PathVariable("ticketNumber") String ticketNumber) {
-		return ResponseEntity.ok(ticketService.findTicketByTicketNumber(ticketNumber));
+	public ResponseEntity<Object> findTicketByNumber(@PathVariable("ticketNumber") String ticketNumber) {
+		Ticket ticket = ticketService.findTicketByTicketNumber(ticketNumber);
+		BaseResponse<Ticket> response = BaseResponse.<Ticket>builder().status(HttpStatus.FOUND.value()).isSuccess(true)
+				.data(ticket).build();
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping
 	public ResponseEntity<Object> buyTicket(@Valid @RequestBody TicketSaveRequest request) {
-		var ticketSaveResponse = ticketService.purchaseTicket(request);
-		var response = BaseResponse.<TicketSaveResponse>builder().status(HttpStatus.CREATED.value()).isSuccess(true)
-				.data(ticketSaveResponse).build();
+		TicketSaveResponse saveResponse = ticketService.purchaseTicket(request);
+		BaseResponse<TicketSaveResponse> response = BaseResponse.<TicketSaveResponse>builder()
+				.status(HttpStatus.CREATED.value()).isSuccess(true).data(saveResponse).build();
 		return ResponseEntity.ok(response);
 	}
 
 	@DeleteMapping("/{ticketNumber}")
 	public ResponseEntity<Object> softDeleteTicket(@PathVariable String ticketNumber) {
-		ticketService.softDeleteTicketByTicketNumber(ticketNumber);
-		return ResponseEntity.ok("ticket number " + ticketNumber + " has been cancelled.");
+		Ticket ticket = ticketService.softDeleteTicketByTicketNumber(ticketNumber);
+		BaseResponse<Ticket> response = BaseResponse.<Ticket>builder().status(HttpStatus.CREATED.value())
+				.isSuccess(true).data(ticket).build();
+		// return ResponseEntity.ok("ticket number " + ticketNumber + " has been
+		// cancelled.");
+		return ResponseEntity.ok(response);
+
 	}
 
 }

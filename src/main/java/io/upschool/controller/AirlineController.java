@@ -27,21 +27,26 @@ public class AirlineController {
 	private final AirlineService airlineService;
 
 	@GetMapping
-	public ResponseEntity<List<Airline>> getAirlines() {
-		var airlines = airlineService.getAllAirlines();
-		return ResponseEntity.ok(airlines);
+	public ResponseEntity<BaseResponse<Airline>> getAirlines() {
+		List<Airline> allAirlines = airlineService.getAllAirlines();
+		BaseResponse<Airline> response = BaseResponse.<Airline>builder().status(HttpStatus.FOUND.value())
+				.isSuccess(true).listData(allAirlines).build();
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping(path = "/{airlineId}")
-	public ResponseEntity<Airline> findAirline(@PathVariable("airlineId") Long airlineId) {
-		return ResponseEntity.ok(airlineService.findAirlineById(airlineId));
+	public ResponseEntity<Object> findAirline(@PathVariable("airlineId") Long airlineId) {
+		Airline airline = airlineService.findAirlineById(airlineId);
+		BaseResponse<Airline> response = BaseResponse.<Airline>builder().status(HttpStatus.FOUND.value())
+				.isSuccess(true).data(airline).build();
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping
 	public ResponseEntity<Object> createAirline(@Valid @RequestBody AirlineSaveRequest airlineSaveRequest) {
-		var airlineSaveResponse = airlineService.save(airlineSaveRequest);
-		var response = BaseResponse.<AirlineSaveResponse>builder().status(HttpStatus.CREATED.value()).isSuccess(true)
-				.data(airlineSaveResponse).build();
+		AirlineSaveResponse saveResponse = airlineService.save(airlineSaveRequest);
+		BaseResponse<AirlineSaveResponse> response = BaseResponse.<AirlineSaveResponse>builder()
+				.status(HttpStatus.CREATED.value()).isSuccess(true).data(saveResponse).build();
 		return ResponseEntity.ok(response);
 	}
 

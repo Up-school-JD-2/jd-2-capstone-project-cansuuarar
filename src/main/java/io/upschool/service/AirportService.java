@@ -55,7 +55,7 @@ public class AirportService {
 	public Airport getReferenceById(Long id) {
 		Airport referenceById = airportRepository.getReferenceById(id);
 		if (referenceById == null) {
-			throw new AirportNotFoundException("Airport couldn not found");
+			throw new AirportNotFoundException("Airport could not found");
 		}
 		return referenceById;
 	}
@@ -63,7 +63,7 @@ public class AirportService {
 	public Airport getReferenceByCode(String code) {
 		Airport airport = airportRepository.findByCode(code);
 		if (airport == null) {
-			throw new AirportNotFoundException("Airport couldn not found");
+			throw new AirportNotFoundException("Airport could not found");
 		}
 		return airport;
 	}

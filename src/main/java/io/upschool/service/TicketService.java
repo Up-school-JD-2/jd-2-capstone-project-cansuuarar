@@ -51,7 +51,7 @@ public class TicketService {
 
 	}
 
-	public void softDeleteTicketByTicketNumber(String ticketNumber) {
+	public Ticket softDeleteTicketByTicketNumber(String ticketNumber) {
 
 		Ticket ticket = ticketRepository.findByTicketNumber(ticketNumber)
 				.orElseThrow(() -> new TicketNotFountException("Ticket could not found!"));
@@ -59,6 +59,7 @@ public class TicketService {
 			ticket.setDeleted(true);
 			ticketRepository.save(ticket);
 		}
+		return ticket;
 	}
 
 	public String maskCreditCard(String creditCardNumber) {
