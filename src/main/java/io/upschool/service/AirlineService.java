@@ -1,6 +1,7 @@
 package io.upschool.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import io.upschool.dtoo.airline.AirlineSaveRequest;
@@ -22,12 +23,9 @@ public class AirlineService {
 	public AirlineSaveResponse save(AirlineSaveRequest request) {
 
 		checkIsAirlineAlreadySaved(request);
-
 		Airline newAirline = Airline.builder().airlineCode(request.getAirlineCode())
 				.airlineName(request.getAirlineName()).build();
-
 		Airline savedAirline = airlineRepository.save(newAirline);
-
 		return AirlineSaveResponse.builder().airlineId(savedAirline.getId()).airlineCode(savedAirline.getAirlineCode())
 				.airlineName(savedAirline.getAirlineName()).build();
 	}
@@ -39,13 +37,19 @@ public class AirlineService {
 		}
 	}
 
-	public List<Airline> getAllAirlines() {
-		return airlineRepository.findAll();
+	public List<AirlineSaveResponse> getAllAirlines() {
+		List<Airline> airlines = airlineRepository.findAll();
+		return airlines.stream().map(
+				airline -> new AirlineSaveResponse(airline.getId(), airline.getAirlineCode(), airline.getAirlineName()))
+				.collect(Collectors.toList());
+
 	}
 
-	public Airline findAirlineById(Long id) {
-		return airlineRepository.findById(id)
+	public AirlineSaveResponse findAirlineById(Long id) {
+		Airline airline = airlineRepository.findById(id)
 				.orElseThrow(() -> new AirlineNotFoundException("Airline could not found!"));
+		return AirlineSaveResponse.builder().airlineId(airline.getId()).airlineCode(airline.getAirlineCode())
+				.airlineName(airline.getAirlineName()).build();
 	}
 
 	@Transactional

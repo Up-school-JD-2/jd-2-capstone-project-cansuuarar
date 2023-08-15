@@ -3,6 +3,7 @@ package io.upschool.service;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import io.upschool.dtoo.ticket.TicketSaveRequest;
 import io.upschool.dtoo.ticket.TicketSaveResponse;
 import io.upschool.entity.Flight;
 import io.upschool.entity.Ticket;
+import io.upschool.exception.route.RouteAlreadySavedException;
 import io.upschool.exception.ticket.TicketNotFountException;
 import io.upschool.repository.TicketRepository;
 import jakarta.transaction.Transactional;
@@ -25,6 +27,8 @@ public class TicketService {
 
 	@Transactional
 	public TicketSaveResponse purchaseTicket(TicketSaveRequest request) {
+
+		checkTicketIsAlreadyPurchased(request);
 
 		Flight flightReferenceById = flightService.getReferenceById(request.getFlightId());
 
@@ -51,7 +55,16 @@ public class TicketService {
 
 	}
 
-	public Ticket softDeleteTicketByTicketNumber(String ticketNumber) {
+	private void checkTicketIsAlreadyPurchased(TicketSaveRequest request) {
+		Ticket ticket = ticketRepository.findTicketByPassengerName(request.getPassengerName());
+		System.out.println(ticket);
+		if (ticket != null) {
+			System.out.println(ticket);
+			throw new RouteAlreadySavedException("This ticket has been already purchased by same person!");
+		}
+	}
+
+	public TicketSaveResponse softDeleteTicketByTicketNumber(String ticketNumber) {
 
 		Ticket ticket = ticketRepository.findByTicketNumber(ticketNumber)
 				.orElseThrow(() -> new TicketNotFountException("Ticket could not found!"));
@@ -59,7 +72,13 @@ public class TicketService {
 			ticket.setDeleted(true);
 			ticketRepository.save(ticket);
 		}
-		return ticket;
+		return TicketSaveResponse.builder().ticketId(ticket.getId())
+				.passengerName(ticket.getPassengerName()).cardNumber(ticket.getCardNumber()).isPurchased(true)
+				.ticketNumber(ticket.getTicketNumber()).ticketPrice(ticket.getTicket_price())
+				.flightId(ticket.getFlightId().getId()).flightNumber(ticket.getFlightId().getFlightNumber())
+				.departureAirport(ticket.getFlightId().getRouteId().getDepartureAirport().getName())
+				.destinationAirport(ticket.getFlightId().getRouteId().getDestinationAirport().getName())
+				.isDeleted(ticket.isDeleted()).build();
 	}
 
 	public String maskCreditCard(String creditCardNumber) {
@@ -90,17 +109,31 @@ public class TicketService {
 		return "TICKET-" + firstFiveDigit;
 	}
 
-	public List<Ticket> getAllTicket() {
-		return ticketRepository.findAll();
+	public List<TicketSaveResponse> getAllTicket() {
+		List<Ticket> tickets = ticketRepository.findAll();
+		return tickets.stream()
+				.map(ticket -> new TicketSaveResponse(ticket.getId(), ticket.getPassengerName(), ticket.getCardNumber(),
+						ticket.isPurchased(), ticket.getTicketNumber(), ticket.getTicket_price(),
+						ticket.getFlightId().getId(), ticket.getFlightId().getFlightNumber(),
+						ticket.getFlightId().getRouteId().getDepartureAirport().getName(),
+						ticket.getFlightId().getRouteId().getDestinationAirport().getName(), ticket.isDeleted()))
+				.collect(Collectors.toList());
 	}
 
 	public Ticket findTicketById(Long id) {
 		return ticketRepository.findById(id).orElseThrow(() -> new TicketNotFountException("Ticket could not found!"));
 	}
 
-	public Ticket findTicketByTicketNumber(String ticketNumber) {
-		return ticketRepository.findByTicketNumber(ticketNumber)
+	public TicketSaveResponse findTicketByTicketNumber(String ticketNumber) {
+		Ticket ticket = ticketRepository.findByTicketNumber(ticketNumber)
 				.orElseThrow(() -> new TicketNotFountException("Ticket could not found!"));
+		return TicketSaveResponse.builder().ticketId(ticket.getId()).passengerName(ticket.getPassengerName())
+				.cardNumber(ticket.getCardNumber()).isPurchased(true).ticketNumber(ticket.getTicketNumber())
+				.ticketPrice(ticket.getTicket_price()).flightId(ticket.getFlightId().getId())
+				.flightNumber(ticket.getFlightId().getFlightNumber())
+				.departureAirport(ticket.getFlightId().getRouteId().getDepartureAirport().getName())
+				.destinationAirport(ticket.getFlightId().getRouteId().getDestinationAirport().getName())
+				.isDeleted(ticket.isDeleted()).build();
 	}
 
 }

@@ -27,18 +27,18 @@ public class AirportController {
 	private final AirportService airportService;
 
 	@GetMapping
-	public ResponseEntity<BaseResponse<Airport>> getAllAirports() {
-		List<Airport> allAirports = airportService.getAllAirports();
-		BaseResponse<Airport> response = BaseResponse.<Airport>builder().status(HttpStatus.FOUND.value())
+	public ResponseEntity<Object> getAllAirports() {
+		List<AirportSaveResponse> allAirports = airportService.getAllAirports();
+		BaseResponse<AirportSaveResponse> response = BaseResponse.<AirportSaveResponse>builder().status(HttpStatus.FOUND.value())
 				.isSuccess(true).listData(allAirports).build();
 		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping(path = "/{airportId}")
 	public ResponseEntity<Object> findAirport(@PathVariable("airportId") Long airportId) {
-		Airport airport = airportService.findAirportById(airportId);
-		BaseResponse<Airport> response = BaseResponse.<Airport>builder().status(HttpStatus.FOUND.value())
-				.isSuccess(true).data(airport).build();
+		AirportSaveResponse saveResponse = airportService.findAirportById(airportId);
+		BaseResponse<AirportSaveResponse> response = BaseResponse.<AirportSaveResponse>builder()
+				.status(HttpStatus.FOUND.value()).isSuccess(true).data(saveResponse).build();
 		return ResponseEntity.ok(response);
 	}
 

@@ -8,7 +8,4 @@ import io.upschool.entity.Flight;
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long>{
 	
-	
-	
-
 }

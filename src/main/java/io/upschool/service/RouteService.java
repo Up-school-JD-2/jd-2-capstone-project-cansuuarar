@@ -1,6 +1,8 @@
 package io.upschool.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import io.upschool.dtoo.route.RouteSaveRequest;
@@ -57,12 +59,24 @@ public class RouteService {
 		}
 	}
 
-	public List<Route> getAllRoutes() {
-		return routeRepository.findAll();
+	public List<RouteSaveResponse> getAllRoutes() {
+		List<Route> routes = routeRepository.findAll();
+		return routes.stream()
+				.map(route -> new RouteSaveResponse(route.getId(), route.getDepartureAirport().getName(),
+						route.getDepartureAirport().getLocation(), route.getDestinationAirport().getName(),
+						route.getDestinationAirport().getLocation()))
+				.collect(Collectors.toList());
+
 	}
 
-	public Route findRouteById(Long id) {
-		return routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("Route could not found!"));
+	public RouteSaveResponse findRouteById(Long id) {
+		Route route = routeRepository.findById(id)
+				.orElseThrow(() -> new RouteNotFoundException("Route could not found!"));
+		return RouteSaveResponse.builder().routeId(route.getId())
+				.departureAirportName(route.getDepartureAirport().getName())
+				.departureAirportLocation(route.getDepartureAirport().getLocation())
+				.destinationAirportName(route.getDestinationAirport().getName())
+				.destinationAirportLocation(route.getDestinationAirport().getLocation()).build();
 	}
 
 	@Transactional

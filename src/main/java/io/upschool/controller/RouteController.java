@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import io.upschool.dtoo.BaseResponse;
 import io.upschool.dtoo.route.RouteSaveRequest;
 import io.upschool.dtoo.route.RouteSaveResponse;
-import io.upschool.entity.Route;
 import io.upschool.service.RouteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,19 +26,18 @@ public class RouteController {
 	private final RouteService routeService;
 
 	@GetMapping
-	public ResponseEntity<BaseResponse<Route>> getAllRoutes() {
-		List<Route> allRoutes = routeService.getAllRoutes();
-
-		BaseResponse<Route> response = BaseResponse.<Route>builder().status(HttpStatus.FOUND.value()).isSuccess(true)
-				.listData(allRoutes).build();
+	public ResponseEntity<Object> getAllRoutes() {
+		List<RouteSaveResponse> allRoutes = routeService.getAllRoutes();
+		BaseResponse<RouteSaveResponse> response = BaseResponse.<RouteSaveResponse>builder()
+				.status(HttpStatus.FOUND.value()).isSuccess(true).listData(allRoutes).build();
 		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping(path = "/{routeId}")
 	public ResponseEntity<Object> findRoute(@PathVariable("routeId") Long routeId) {
-		Route route = routeService.findRouteById(routeId);
-		BaseResponse<Route> response = BaseResponse.<Route>builder().status(HttpStatus.FOUND.value()).isSuccess(true)
-				.data(route).build();
+		RouteSaveResponse saveResponse = routeService.findRouteById(routeId);
+		BaseResponse<RouteSaveResponse> response = BaseResponse.<RouteSaveResponse>builder()
+				.status(HttpStatus.FOUND.value()).isSuccess(true).data(saveResponse).build();
 		return ResponseEntity.ok(response);
 	}
 

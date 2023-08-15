@@ -27,18 +27,18 @@ public class FlightController {
 	private final FlightService flightService;
 
 	@GetMapping
-	public ResponseEntity<BaseResponse<Flight>> getAllFlight() {
-		List<Flight> allFlight = flightService.getAllFlight();
-		BaseResponse<Flight> response = BaseResponse.<Flight>builder().status(HttpStatus.FOUND.value()).isSuccess(true)
-				.listData(allFlight).build();
+	public ResponseEntity<Object> getAllFlight() {
+		List<FlightSaveResponse> allFlights = flightService.getAllFlight();
+		BaseResponse<FlightSaveResponse> response = BaseResponse.<FlightSaveResponse>builder()
+				.status(HttpStatus.FOUND.value()).isSuccess(true).listData(allFlights).build();
 		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping(path = "/{flightId}")
 	public ResponseEntity<Object> findFlight(@PathVariable("flightId") Long flightId) {
-		Flight flight = flightService.findFlightById(flightId);
-		BaseResponse<Flight> response = BaseResponse.<Flight>builder().status(HttpStatus.FOUND.value()).isSuccess(true)
-				.data(flight).build();
+		FlightSaveResponse saveResponse = flightService.findFlightById(flightId);
+		BaseResponse<FlightSaveResponse> response = BaseResponse.<FlightSaveResponse>builder()
+				.status(HttpStatus.FOUND.value()).isSuccess(true).data(saveResponse).build();
 		return ResponseEntity.ok(response);
 
 	}

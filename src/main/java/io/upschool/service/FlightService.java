@@ -2,6 +2,7 @@ package io.upschool.service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -47,12 +48,22 @@ public class FlightService {
 		return response;
 	}
 
-	public List<Flight> getAllFlight() {
-		return flightRepository.findAll();
+	public List<FlightSaveResponse> getAllFlight() {
+		List<Flight> flights = flightRepository.findAll();
+		return flights.stream()
+				.map(flight -> new FlightSaveResponse(flight.getId(), flight.getFlightNumber(),
+						flight.getDepartureDate(), flight.getArrivalDate(), flight.getTotalSeat(),
+						flight.getRouteId().getId(), flight.getAirlineId().getId()))
+				.collect(Collectors.toList());
 	}
 
-	public Flight findFlightById(Long id) {
-		return flightRepository.findById(id).orElseThrow(() -> new FlightNotFoundException("Flight could not found!"));
+	public FlightSaveResponse findFlightById(Long id) {
+		Flight flight = flightRepository.findById(id)
+				.orElseThrow(() -> new FlightNotFoundException("Flight could not found!"));
+		return FlightSaveResponse.builder().id(flight.getId()).flightNumber(flight.getFlightNumber())
+				.departureDate(flight.getDepartureDate()).arrivalDate(flight.getArrivalDate())
+				.totalSeat(flight.getTotalSeat()).routeId(flight.getRouteId().getId())
+				.airlineId(flight.getAirlineId().getId()).build();
 	}
 
 	private String generateFlightNumber() {

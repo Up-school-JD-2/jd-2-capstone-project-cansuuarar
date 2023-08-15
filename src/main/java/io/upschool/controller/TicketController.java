@@ -28,18 +28,18 @@ public class TicketController {
 	private final TicketService ticketService;
 
 	@GetMapping
-	public ResponseEntity<BaseResponse<Ticket>> getAllTickets() {
-		List<Ticket> allTicket = ticketService.getAllTicket();
-		BaseResponse<Ticket> response = BaseResponse.<Ticket>builder().status(HttpStatus.FOUND.value()).isSuccess(true)
-				.listData(allTicket).build();
+	public ResponseEntity<Object> getAllTickets() {
+		List<TicketSaveResponse> allTickets = ticketService.getAllTicket();
+		BaseResponse<TicketSaveResponse> response = BaseResponse.<TicketSaveResponse>builder()
+				.status(HttpStatus.FOUND.value()).isSuccess(true).listData(allTickets).build();
 		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping(path = "/{ticketNumber}")
 	public ResponseEntity<Object> findTicketByNumber(@PathVariable("ticketNumber") String ticketNumber) {
-		Ticket ticket = ticketService.findTicketByTicketNumber(ticketNumber);
-		BaseResponse<Ticket> response = BaseResponse.<Ticket>builder().status(HttpStatus.FOUND.value()).isSuccess(true)
-				.data(ticket).build();
+		TicketSaveResponse saveResponse = ticketService.findTicketByTicketNumber(ticketNumber);
+		BaseResponse<TicketSaveResponse> response = BaseResponse.<TicketSaveResponse>builder()
+				.status(HttpStatus.FOUND.value()).isSuccess(true).data(saveResponse).build();
 		return ResponseEntity.ok(response);
 	}
 
@@ -53,11 +53,9 @@ public class TicketController {
 
 	@DeleteMapping("/{ticketNumber}")
 	public ResponseEntity<Object> softDeleteTicket(@PathVariable String ticketNumber) {
-		Ticket ticket = ticketService.softDeleteTicketByTicketNumber(ticketNumber);
-		BaseResponse<Ticket> response = BaseResponse.<Ticket>builder().status(HttpStatus.CREATED.value())
-				.isSuccess(true).data(ticket).build();
-		// return ResponseEntity.ok("ticket number " + ticketNumber + " has been
-		// cancelled.");
+		TicketSaveResponse saveResponse = ticketService.softDeleteTicketByTicketNumber(ticketNumber);
+		BaseResponse<TicketSaveResponse> response = BaseResponse.<TicketSaveResponse>builder().status(HttpStatus.CREATED.value())
+				.isSuccess(true).data(saveResponse).build();
 		return ResponseEntity.ok(response);
 
 	}

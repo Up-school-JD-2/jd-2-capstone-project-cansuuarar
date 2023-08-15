@@ -1,6 +1,7 @@
 package io.upschool.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -23,15 +24,11 @@ public class AirportService {
 	public AirportSaveResponse save(AirportSaveRequest request) {
 
 		checkAirportIsAlreadySaved(request);
-
 		Airport newAirport = Airport.builder().code(request.getCode()).name(request.getName())
 				.location(request.getLocation()).build();
-
 		Airport savedAirport = airportRepository.save(newAirport);
-
 		AirportSaveResponse response = AirportSaveResponse.builder().id(savedAirport.getId())
 				.code(savedAirport.getCode()).name(savedAirport.getName()).location(savedAirport.getLocation()).build();
-
 		return response;
 	}
 
@@ -42,13 +39,18 @@ public class AirportService {
 		}
 	}
 
-	public List<Airport> getAllAirports() {
-		return airportRepository.findAll();
+	public List<AirportSaveResponse> getAllAirports() {
+		List<Airport> airports = airportRepository.findAll();
+		return airports.stream().map(
+				airport -> new AirportSaveResponse(airport.getId(), airport.getCode(), airport.getName(), airport.getLocation()))
+				.collect(Collectors.toList());
 	}
 
-	public Airport findAirportById(Long id) {
-		return airportRepository.findById(id)
+	public AirportSaveResponse findAirportById(Long id) {
+		Airport airport = airportRepository.findById(id)
 				.orElseThrow(() -> new AirportNotFoundException("Airport could not found!"));
+		return AirportSaveResponse.builder().id(airport.getId()).code(airport.getCode()).name(airport.getName())
+				.location(airport.getLocation()).build();
 	}
 
 	@Transactional

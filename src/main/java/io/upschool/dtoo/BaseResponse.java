@@ -25,8 +25,7 @@ public class BaseResponse<T> {
 	private String error = "No error message available.";
 
 	private T data;
-	
+
 	private List<T> listData;
 
-	
 }

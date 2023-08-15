@@ -35,7 +35,7 @@ public class Ticket {
 	@Column(name = "ticket_no", nullable = false, unique = true)
 	private String ticketNumber;
 
-	@Column(name = "card_number", nullable = false, unique = true)
+	@Column(name = "card_number", nullable = false)
 	private String cardNumber;
 
 	@Column(name = "passenger_name", nullable = false)
